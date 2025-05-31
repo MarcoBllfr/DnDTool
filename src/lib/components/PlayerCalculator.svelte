@@ -1,5 +1,6 @@
 <script lang="ts">
 import { levelRules } from '$lib/data/LevelRules';
+import Icon from "@iconify/svelte";
    interface Giocatore {
 		livello: number;
 	}
@@ -58,7 +59,7 @@ $effect(()=>{
     <table class="border-collapse border border-gray-400 w-full mt-4">
         <thead>
           <tr>
-            <th class="border px-2 py-1">Giocatore #</th>
+            <th class="border px-2 py-1">Giocatore</th>
             <th class="border px-2 py-1">Livello</th>
           </tr>
         </thead>
@@ -104,7 +105,9 @@ $effect(()=>{
 
 <div class="p-4 space-y-4">
     <div>
-      <label for="num">Numero di giocatori:</label>
+      <label for="num">
+        Number of player:
+    </label>
       <input
         id="num"
         type="number"
@@ -112,6 +115,7 @@ $effect(()=>{
         bind:value={numeroGiocatori}
         class="ml-2 border px-2 py-1"
       />
+      <Icon icon="mdi:shield-sword-outline" width={"40"} />
 </div>
 {#if numeroGiocatori > 0}
 {@render tabGiocatori()}
@@ -126,3 +130,6 @@ $effect(()=>{
 
 </div>
 <button onclick={calcolaExp}>Calculate</button>
+<style>
+
+</style>
