@@ -1,9 +1,10 @@
 <script lang="ts">
 import { levelRules } from '$lib/data/LevelRules';
 import Icon from "@iconify/svelte";
-   interface Giocatore {
-		livello: number;
-	}
+
+interface Giocatore {
+  livello: number;
+}
 
 interface Difficulty {
   facile: number;
@@ -11,9 +12,11 @@ interface Difficulty {
   difficile: number;
   mortale: number;
 }
+
 type Difficolta = keyof Difficulty;
-	let numeroGiocatori = $state(1);
-	let listaPlayer = $state<Giocatore[]>([]);
+
+let numeroGiocatori = $state(1);
+let listaPlayer = $state<Giocatore[]>([]);
 
 const difficoltaList: Difficolta[] = ['facile', 'medio', 'difficile', 'mortale'];
 
@@ -23,19 +26,18 @@ let expTotale: Difficulty = $state({
   difficile: 0,
   mortale: 0
 });
-	// Usa $effect per aggiornare listaPlayer al cambiamento di numeroGiocatori
-	$effect(() => {
-		if (numeroGiocatori > listaPlayer.length) {
-			const nuovi = Array.from({ length: numeroGiocatori - listaPlayer.length }, () => ({ livello: 1 }));
-			listaPlayer.push(...nuovi);
-		} else if (numeroGiocatori < listaPlayer.length) {
-			listaPlayer.length = numeroGiocatori;
-		}
-	});
 
+// Usa $effect per aggiornare listaPlayer al cambiamento di numeroGiocatori
+$effect(() => {
+  if (numeroGiocatori > listaPlayer.length) {
+    const nuovi = Array.from({ length: numeroGiocatori - listaPlayer.length }, () => ({ livello: 1 }));
+    listaPlayer.push(...nuovi);
+  } else if (numeroGiocatori < listaPlayer.length) {
+    listaPlayer.length = numeroGiocatori;
+  }
+});
 
-
-    function calcolaExp() {
+function calcolaExp() {
   difficoltaList.forEach(difficolta => {
     let tempExp = 0;
     listaPlayer.forEach(giocatore => {
@@ -47,89 +49,128 @@ let expTotale: Difficulty = $state({
   expTotale = expTotale;
 }
 
-$effect(()=>{
-    if(expTotale.facile > 0){
-        calcolaExp();
-    }
-})
-
+$effect(() => {
+  if (listaPlayer.length > 0) {
+    calcolaExp();
+  }
+});
 </script>
 
 {#snippet tabGiocatori()}
-    <table class="border-collapse border border-gray-400 w-full mt-4">
-        <thead>
-          <tr>
-            <th class="border px-2 py-1">Giocatore</th>
-            <th class="border px-2 py-1">Livello</th>
-          </tr>
-        </thead>
-        <tbody>
-            {#each listaPlayer  as giocatore,index }
-            <tr>
-            <td class="border px-2 text-center">{index + 1}</td>
-            <td class="border px-2 text-center">
-              <input
-                type="number"
-                min="1"
-                max="20"
-                bind:value={giocatore.livello}
-                class="w-full border px-1"
-              />
-            </td>
-          </tr>
-            {/each}
-        </tbody>
-        </table>
+<div class="table-card">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Player</th>
+        <th>Level</th>
+      </tr>
+    </thead>
+    <tbody>
+      {#each listaPlayer as giocatore, index}
+      <tr>
+        <td>{index + 1}</td>
+        <td>
+          <input
+            type="number"
+            min="1"
+            max="20"
+            bind:value={giocatore.livello}
+            class="w-full"
+            placeholder="1"
+          />
+        </td>
+      </tr>
+      {/each}
+    </tbody>
+  </table>
+</div>
 {/snippet}
 
 {#snippet tabExp()}
-<table>
+<div class="table-card">
+  <table class="table">
     <thead>
-        <tr>
-            <th>Easy</th>
-            <th>Medium</th>
-            <th>Hard</th>
-            <th>Deadly</th>
-        </tr>
+      <tr>
+        <th>Easy</th>
+        <th>Medium</th>
+        <th>Hard</th>
+        <th>Deadly</th>
+      </tr>
     </thead>
     <tbody>
-    <tr>
-        <th>{expTotale.facile}</th>
-        <th>{expTotale.medio}</th>
-        <th>{expTotale.difficile}</th>
-        <th>{expTotale.mortale}</th>
-    </tr>
+      <tr>
+        <td class="important">{expTotale.facile}</td>
+        <td class="important">{expTotale.medio}</td>
+        <td class="important">{expTotale.difficile}</td>
+        <td class="important">{expTotale.mortale}</td>
+      </tr>
     </tbody>
   </table>
+</div>
 {/snippet}
 
-<div class="p-4 space-y-4">
-    <div>
-      <label for="num">
-        Number of player:
-    </label>
+<div class="container">
+  <div class="card">
+    <h1 class="text-center mb-m">D&D Experience Calculator</h1>
+    <div class="underscore mb-l"></div>
+    
+    <div class="mb-m">
+      <label for="num" class="bold">
+        <Icon icon="mdi:account-group" width="20" style="vertical-align: middle; margin-right: 8px;" />
+        Number of Players:
+      </label>
       <input
         id="num"
         type="number"
-        min="0"
+        min="1"
+        max="8"
         bind:value={numeroGiocatori}
-        class="ml-2 border px-2 py-1"
+        class="ml-2"
+        placeholder="1"
       />
-      <Icon icon="mdi:shield-sword-outline" width={"40"} />
-</div>
-{#if numeroGiocatori > 0}
-{@render tabGiocatori()}
-{:else}
-<h3>Insert a number of player up to 0</h3>
-{/if}
-{#if expTotale.facile > 0}
-{@render tabExp()}
+    </div>
+
+    {#if numeroGiocatori > 0}
+      <div class="mb-m">
+        <h3 class="mb-s">
+          <Icon icon="mdi:sword" width="24" style="vertical-align: middle; margin-right: 8px;" />
+          Party Configuration
+        </h3>
+        {@render tabGiocatori()}
+      </div>
     {:else}
-    <h3>No exp to show for now</h3>
-{/if}
+      <div class="card">
+        <h3 class="text-center">Please enter the number of players</h3>
+      </div>
+    {/if}
 
+    {#if expTotale.facile > 0}
+      <div class="mb-m">
+        <h3 class="mb-s">
+          <Icon icon="mdi:treasure-chest" width="24" style="vertical-align: middle; margin-right: 8px;" />
+          Experience Thresholds
+        </h3>
+        {@render tabExp()}
+      </div>
+      
+      <div class="text-center mt-m">
+        <button onclick={calcolaExp} class="btn btn-primary">
+          <Icon icon="mdi:calculator" width="20" style="vertical-align: middle; margin-right: 8px;" />
+          Recalculate Experience
+        </button>
+      </div>
+    {:else}
+      <div class="card text-center">
+        <Icon icon="mdi:dice-d20" width="48" style="color: #8b0000;" />
+        <h3 class="mt-s">Configure your party to see experience thresholds</h3>
+        <p class="dark-grey">Add players and set their levels to calculate encounter difficulty</p>
+      </div>
+    {/if}
+  </div>
 </div>
-<button onclick={calcolaExp}>Calculate</button>
-<style>
 
+<style>
+  .w-full {
+    width: 100%;
+  }
 </style>

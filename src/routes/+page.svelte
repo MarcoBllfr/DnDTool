@@ -1,5 +1,5 @@
 <script>
-  import { PlayerCalc } from "$lib/components";
+  import { PlayerCalc} from "$lib/components";
 
 
 </script>
