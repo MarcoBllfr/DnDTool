@@ -1,14 +1,27 @@
 <script lang="ts">
-    import { levelRules } from '$lib/data/LevelRules';
+import { levelRules } from '$lib/data/LevelRules';
    interface Giocatore {
 		livello: number;
 	}
 
+interface Difficulty {
+  facile: number;
+  medio: number;
+  difficile: number;
+  mortale: number;
+}
+type Difficolta = keyof Difficulty;
 	let numeroGiocatori = $state(1);
 	let listaPlayer = $state<Giocatore[]>([]);
-    let totalExp = 0;
 
+const difficoltaList: Difficolta[] = ['facile', 'medio', 'difficile', 'mortale'];
 
+let expTotale: Difficulty = $state({
+  facile: 0,
+  medio: 0,
+  difficile: 0,
+  mortale: 0
+});
 	// Usa $effect per aggiornare listaPlayer al cambiamento di numeroGiocatori
 	$effect(() => {
 		if (numeroGiocatori > listaPlayer.length) {
@@ -18,18 +31,27 @@
 			listaPlayer.length = numeroGiocatori;
 		}
 	});
+
+
+
     function calcolaExp() {
-        let tempExp = 0;
-        listaPlayer.forEach(giocatore => {
-            const bonus = levelRules.facile[giocatore.livello] ?? 0;
-            tempExp += bonus;
-         
-       });
-       totalExp = tempExp ;
-       console.log(totalExp);
-       tempExp = 0;
-       totalExp = 0;
+  difficoltaList.forEach(difficolta => {
+    let tempExp = 0;
+    listaPlayer.forEach(giocatore => {
+      const bonus = levelRules[difficolta]?.[giocatore.livello] ?? 0;
+      tempExp += bonus;
+    });
+    expTotale[difficolta] = tempExp;
+  });
+  expTotale = expTotale;
+}
+
+$effect(()=>{
+    if(expTotale.facile > 0){
+        calcolaExp();
     }
+})
+
 </script>
 
 {#snippet tabGiocatori()}
@@ -59,6 +81,27 @@
         </table>
 {/snippet}
 
+{#snippet tabExp()}
+<table>
+    <thead>
+        <tr>
+            <th>Easy</th>
+            <th>Medium</th>
+            <th>Hard</th>
+            <th>Deadly</th>
+        </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <th>{expTotale.facile}</th>
+        <th>{expTotale.medio}</th>
+        <th>{expTotale.difficile}</th>
+        <th>{expTotale.mortale}</th>
+    </tr>
+    </tbody>
+  </table>
+{/snippet}
+
 <div class="p-4 space-y-4">
     <div>
       <label for="num">Numero di giocatori:</label>
@@ -74,6 +117,11 @@
 {@render tabGiocatori()}
 {:else}
 <h3>Insert a number of player up to 0</h3>
+{/if}
+{#if expTotale.facile > 0}
+{@render tabExp()}
+    {:else}
+    <h3>No exp to show for now</h3>
 {/if}
 
 </div>
