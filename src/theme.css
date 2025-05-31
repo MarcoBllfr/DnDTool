@@ -114,6 +114,84 @@ input[type="text"]:focus {
 .dark-mode input[type="text"]::placeholder {
   color: var(--secondary-text-color);
 }
+/* Rimuove completamente le freccette native dagli input numerici */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Per Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* Container per input con bottoni personalizzati */
+.number-input-container {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  width: 100%;
+}
+
+.number-input-container input[type="number"] {
+  padding-right: 60px; /* Spazio per i due bottoni */
+  width: 100%;
+}
+
+/* Stile per i bottoni incremento/decremento */
+.number-input-buttons {
+  position: absolute;
+  right: 2px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.number-btn {
+  width: 24px;
+  height: 18px;
+  padding: 0;
+  margin: 0;
+  background: var(--button-bg-color);
+  border: 1px solid var(--border-color);
+  color: var(--button-text-color);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  font-size: 12px;
+  line-height: 1;
+}
+
+.number-btn:first-child {
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+}
+
+.number-btn:last-child {
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+}
+
+.number-btn:hover {
+  background: var(--button-hover-bg);
+  border-color: var(--accent-color);
+  transform: scale(1.05);
+}
+
+.number-btn:active {
+  transform: scale(0.95);
+  background: var(--accent-color);
+}
+
+/* Focus state per il container */
+.number-input-container:focus-within .number-btn {
+  border-color: var(--accent-color);
+}
 
 /* Buttons */
 .btn, button {

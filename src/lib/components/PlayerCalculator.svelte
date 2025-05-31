@@ -56,6 +56,8 @@ $effect(() => {
 });
 </script>
 
+
+
 {#snippet tabGiocatori()}
 <div class="table-card">
   <table class="table">
