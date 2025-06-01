@@ -1,3 +1,49 @@
+/* CSS Variables per Light e Dark Mode */
+:root {
+  /* Light mode */
+  --background-color: #ffffff;
+  --text-color: #2c2c2c;
+  --secondary-text-color: #5e5e5e;
+  --accent-color: #8b0000;
+  --card-bg-color: #fffdf4;
+  --border-color: #c0a060;
+  --header-bg-color: #fff8e1;
+  --nav-bg-color: #f5e6c4;
+  --table-header-bg: #f5e6c4;
+  --button-bg-color: #8b0000;
+  --button-text-color: #ffffff;
+  --button-hover-bg: #a00000;
+  --input-bg-color: #fffdf4;
+  --hover-color: #f5d25d;
+  --important-color: #8b0000;
+  --underscore-color: #c0a060;
+  --box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  --box-shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.dark-mode {
+  /* Dark mode */
+  --background-color: #1a1a1a;
+  --text-color: #e0dccc;
+  --secondary-text-color: #a0968a;
+  --accent-color: #f8e9c0;
+  --card-bg-color: rgba(0, 0, 0, 0.6);
+  --border-color: #5c442a;
+  --header-bg-color: #2b1a12;
+  --nav-bg-color: #3a2d23;
+  --table-header-bg: rgba(92, 68, 42, 0.3);
+  --button-bg-color: #5c442a;
+  --button-text-color: #f8e9c0;
+  --button-hover-bg: #6d5332;
+  --input-bg-color: rgba(0, 0, 0, 0.4);
+  --hover-color: rgba(92, 68, 42, 0.848);
+  --important-color: #f8e9c0;
+  --underscore-color: #5c442a;
+  --box-shadow: 2px 2px 6px #000;
+  --box-shadow-hover: 4px 4px 12px rgba(0, 0, 0, 0.6);
+}
+
+/* Reset e Base Styles */
 *,
 *::after,
 *::before {
@@ -5,6 +51,7 @@
   padding: 0;
   box-sizing: inherit;
   -webkit-tap-highlight-color: transparent;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 html, body {
@@ -15,7 +62,8 @@ html, body {
 }
 
 body {
-  color: #2c2c2c;
+  background-color: var(--background-color);
+  color: var(--text-color);
   font-family: 'Alegreya SC',"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   line-height: 1.6;
 }
@@ -48,6 +96,7 @@ button {
   font-weight: 400;
 }
 
+/* Typography */
 h1,
 h2,
 h3,
@@ -56,26 +105,27 @@ h5,
 h6,
 p {
   margin: 0;
+  color: var(--text-color);
 }
 
 h1 {
   font-size: 36px;
   line-height: 1.1;
   font-weight: bold;
-  color: #8b0000;
+  color: var(--accent-color);
 }
 
 h2 {
   font-size: 28px;
   line-height: 1.2;
   font-weight: bold;
-  color: #8b0000;
+  color: var(--accent-color);
 }
 
 h3 {
   font-size: 22px;
   line-height: 1.3;
-  color: #2c2c2c;
+  color: var(--text-color);
 }
 
 h4 {
@@ -96,7 +146,7 @@ p {
 
 /* Utility Classes */
 .dark-grey {
-  color: #5e5e5e;
+  color: var(--secondary-text-color);
 }
 
 .default-margin {
@@ -110,7 +160,7 @@ p {
 }
 
 .underscore {
-  background-color: #c0a060;
+  background-color: var(--underscore-color);
   height: 4px;
   width: 40px;
   margin: 0 auto;
@@ -172,25 +222,26 @@ img {
 
 .important {
   font-weight: 600;
-  color: #8b0000;
+  color: var(--important-color);
 }
 
 /* Header Components */
 .header {
-  background-color: #fff8e1;
+  background-color: var(--header-bg-color);
   padding: 1rem;
-  border-bottom: 2px solid #c0a060;
+  border-bottom: 2px solid var(--border-color);
+  box-shadow: var(--box-shadow);
 }
 
 .logo {
-  color: #8b0000;
+  color: var(--accent-color);
   margin: 0;
 }
 
 .theme-toggle {
-  background: #8b0000;
-  color: white;
-  border: 2px solid #c0a060;
+  background: var(--button-bg-color);
+  color: var(--button-text-color);
+  border: 2px solid var(--border-color);
   padding: 0.5rem 1rem;
   border-radius: 6px;
   font-weight: bold;
@@ -198,21 +249,22 @@ img {
 }
 
 .theme-toggle:hover {
-  background: #a00000;
+  background: var(--button-hover-bg);
   transform: translateY(-1px);
 }
 
 .nav {
-  background-color: #f5e6c4;
+  background-color: var(--nav-bg-color);
   padding: 0.5rem 1rem;
   display: flex;
   gap: 1rem;
   flex-wrap: wrap;
+  border-bottom: 2px solid var(--border-color);
 }
 
 .nav a {
   text-decoration: none;
-  color: #2c2c2c;
+  color: var(--text-color);
   font-weight: bold;
   padding: 0.25rem 0.5rem;
   border-radius: 4px;
@@ -220,7 +272,7 @@ img {
 }
 
 .nav a:hover {
-  background-color: #fff8e1;
+  background-color: var(--hover-color);
 }
 
 /* Container */
@@ -230,20 +282,108 @@ img {
 
 /* Form Elements */
 input[type="number"],
-input[type="text"]{
+input[type="text"] {
   font-family: inherit;
   transition: all 0.3s ease;
-  background: #fffdf4;
-  border: 1px solid #c0a060;
+  background: var(--input-bg-color);
+  border: 1px solid var(--border-color);
   border-radius: 4px;
   padding: 0.5rem;
+  color: var(--text-color);
 }
 
 input[type="number"]:focus,
-input[type="text"]:focus{
+input[type="text"]:focus {
   outline: none;
-  border-color: #8b0000;
+  border-color: var(--accent-color);
   box-shadow: 0 0 0 2px rgba(139, 0, 0, 0.1);
+}
+
+.dark-mode input[type="number"]:focus,
+.dark-mode input[type="text"]:focus {
+  box-shadow: 0 0 0 2px rgba(248, 233, 192, 0.2);
+}
+
+.dark-mode input[type="number"]::placeholder,
+.dark-mode input[type="text"]::placeholder {
+  color: var(--secondary-text-color);
+}
+
+/* Rimuove le freccette native dagli input numerici */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+
+.number-input-container {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 15px; 
+  width: 85%;
+}
+.number-input-container input[type="number"] {
+  width: auto;
+  min-width: 80px;
+  flex: 1;
+}
+
+
+.number-input-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-left: 20px; 
+}
+
+.number-btn {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  margin: 0;
+  background: var(--button-bg-color);
+  border: 2px solid var(--border-color);
+  color: var(--button-text-color);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  font-size: 12px;
+  line-height: 1;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.number-btn:hover {
+  background: var(--button-hover-bg);
+  border-color: var(--accent-color);
+  transform: scale(1.1);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+}
+
+.number-btn:active {
+  transform: scale(0.95);
+  background: var(--accent-color);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.dark-mode .number-btn {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.dark-mode .number-btn:hover {
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
+}
+
+.number-input-container:focus-within .number-btn {
+  border-color: var(--accent-color);
 }
 
 /* Buttons */
@@ -254,17 +394,17 @@ input[type="text"]:focus{
   font-weight: 500;
   text-align: center;
   text-decoration: none;
-  border: 2px solid #c0a060;
+  border: 2px solid var(--border-color);
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.3s ease;
   user-select: none;
-  background: #8b0000;
-  color: white;
+  background: var(--button-bg-color);
+  color: var(--button-text-color);
 }
 
 .btn:hover, button:hover {
-  background: #a00000;
+  background: var(--button-hover-bg);
   transform: translateY(-1px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
@@ -274,29 +414,29 @@ input[type="text"]:focus{
 }
 
 .btn-primary {
-  background: #8b0000;
-  color: white;
-  border: 2px solid #c0a060;
+  background: var(--button-bg-color);
+  color: var(--button-text-color);
+  border: 2px solid var(--border-color);
 }
 
 .btn-primary:hover {
-  background: #a00000;
+  background: var(--button-hover-bg);
 }
 
 /* Cards */
 .card {
-  background: #fffdf4;
+  background: var(--card-bg-color);
   padding: 1.5rem;
   margin: 1rem 0;
-  border: 1px solid #c0a060;
+  border: 2px solid var(--border-color);
   border-radius: 10px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--box-shadow);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--box-shadow-hover);
 }
 
 .card-body {
@@ -304,49 +444,52 @@ input[type="text"]:focus{
 }
 
 .table-card {
-  border: 2px solid #c0a060;
+  border: 2px solid var(--border-color);
   border-radius: 8px;
   padding: 1rem;
-  background: #fffdf4;
+  background: var(--card-bg-color);
   overflow-x: auto;
+  box-shadow: var(--box-shadow);
 }
 
 /* Tables */
 .table, table {
   width: 100%;
   border-collapse: collapse;
-  background: #fffdf4;
+  background: var(--card-bg-color);
   border-radius: 8px;
   overflow: hidden;
   margin: 1rem 0;
 }
 
 .table th, .table td, th, td {
-  border: 1px solid #c0a060;
+  border: 1px solid var(--border-color);
   padding: 0.6rem 0.4rem;
   text-align: center;
   font-size: 0.85rem;
+  color: var(--text-color);
 }
 
 .table th, th {
-  background-color: #f5e6c4;
+  background-color: var(--table-header-bg);
   font-weight: 600;
-  color: #2c2c2c;
+  color: var(--text-color);
+  font-weight: bold;
+  text-transform: uppercase;
 }
 
 .table td, td {
-  background: #fffdf4;
+  background: var(--card-bg-color);
+}
+
+.table tbody tr:hover, tbody tr:hover {
+  background-color: var(--hover-color);
 }
 
 .table tr:last-child td, tr:last-child td {
-  border-bottom: 1px solid #c0a060;
+  border-bottom: 1px solid var(--border-color);
 }
-.table thead th {
-  font-weight: bold;
-  text-transform: uppercase;
-  background-color: var(--table-header-bg);
-  color: var(--text-color);
-}
+
 /* Grid System */
 .grid {
   display: grid;
@@ -386,7 +529,7 @@ input[type="text"]:focus{
 }
 
 .border {
-  border: 1px solid #c0a060;
+  border: 1px solid var(--border-color);
 }
 
 .border-collapse {
@@ -394,7 +537,7 @@ input[type="text"]:focus{
 }
 
 .border-gray-400 {
-  border-color: #c0a060;
+  border-color: var(--border-color);
 }
 
 .w-full {
@@ -416,6 +559,7 @@ input[type="text"]:focus{
   padding-right: 0.25rem;
 }
 
+/* Media Queries */
 @media (min-width: 768px) {
   h1 {
     font-size: 48px;
@@ -476,6 +620,19 @@ input[type="text"]:focus{
     padding: 0.75rem 1.5rem;
     font-size: 1rem;
   }
+
+  .number-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+  }
+  
+  .number-input-buttons {
+    gap: 6px;
+  }
+  .number-input-container {
+    gap: 14px; 
+  }
 }
 
 @media (min-width: 1024px) {
@@ -510,6 +667,9 @@ input[type="text"]:focus{
   .table th, .table td, th, td {
     padding: 1rem;
     font-size: 1rem;
+  }
+  .number-input-container {
+    gap: 16px; 
   }
 }
 

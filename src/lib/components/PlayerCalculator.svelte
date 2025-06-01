@@ -1,6 +1,6 @@
 <script lang="ts">
 import { levelRules } from '$lib/data/LevelRules';
-import Icon from "@iconify/svelte";
+import Icon, { _api } from "@iconify/svelte";
 
 interface Giocatore {
   livello: number;
@@ -54,6 +54,8 @@ $effect(() => {
     calcolaExp();
   }
 });
+
+
 </script>
 
 
@@ -70,16 +72,45 @@ $effect(() => {
     <tbody>
       {#each listaPlayer as giocatore, index}
       <tr>
+        
         <td>{index + 1}</td>
         <td>
-          <input
-            type="number"
-            min="1"
-            max="20"
-            bind:value={giocatore.livello}
-            class="w-full"
-            placeholder="1"
-          />
+          <div class="number-input-container">
+            <input
+              type="number"
+              min="1"
+              max="20"
+              bind:value={giocatore.livello}
+              class="w-full"
+              placeholder="1"
+            />
+            <div class="number-input-buttons">
+              <button 
+                class="number-btn"
+                type="button"
+                onclick={() => {
+                  if(giocatore.livello < 20){
+                    giocatore.livello += 1;
+                  }
+                }}
+                aria-label="Increment"
+              >
+                <Icon icon="mdi:chevron-up" width="14" />
+              </button>
+              <button 
+                class="number-btn"
+                type="button" 
+                onclick={() => {
+                  if(giocatore.livello > 1){
+                    giocatore.livello -= 1;
+                  }
+                }}
+                aria-label="Decrement"
+              >
+                <Icon icon="mdi:chevron-down" width="14" />
+              </button>
+            </div>
+          </div>
         </td>
       </tr>
       {/each}
@@ -121,16 +152,39 @@ $effect(() => {
         <Icon icon="mdi:account-group" width="20" style="vertical-align: middle; margin-right: 8px;" />
         Number of Players:
       </label>
-      <input
-        id="num"
-        type="number"
-        min="1"
-        max="8"
-        bind:value={numeroGiocatori}
-        class="ml-2"
-        placeholder="1"
-      />
+      <div class="number-input-container ml-2">
+        <input
+          id="num"
+          type="number"
+          bind:value={numeroGiocatori}
+          class="w-full"
+          placeholder="1"
+        />
+        <div class="number-input-buttons">
+          <button 
+            class="number-btn"
+            type="button"
+            onclick={() => {
+                numeroGiocatori += 1;
+            }}
+            aria-label="Increment"
+          >
+            <Icon icon="mdi:chevron-up" width="14" />
+          </button>
+          <button 
+            class="number-btn"
+            type="button" 
+            onclick={() => {
+                numeroGiocatori -= 1;
+            }}
+            aria-label="Decrement"
+          >
+            <Icon icon="mdi:chevron-down" width="14" />
+          </button>
+        </div>
+      </div>
     </div>
+    
 
     {#if numeroGiocatori > 0}
       <div class="mb-m">
