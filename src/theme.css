@@ -1,6 +1,6 @@
-/* CSS Variables per il sistema di temi dndtool */
+
 :root {
-  /* Light mode - colori da app.css */
+  /* Light mode  */
   --background-color: #ffffff;
   --text-color: #2c2c2c;
   --secondary-text-color: #5e5e5e;
@@ -14,7 +14,7 @@
   --button-text-color: #ffffff;
   --button-hover-bg: #a00000;
   --input-bg-color: #fffdf4;
-  --hover-color: #fff8e1;
+  --hover-color: #f5d25d;
   --important-color: #8b0000;
   --underscore-color: #c0a060;
   --box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
@@ -22,7 +22,7 @@
 }
 
 .dark-mode {
-  /* Dark mode - colori da theme.css */
+  /* Dark mode  */
   --background-color: #1a1a1a;
   --text-color: #e0dccc;
   --secondary-text-color: #a0968a;
@@ -36,21 +36,21 @@
   --button-text-color: #f8e9c0;
   --button-hover-bg: #6d5332;
   --input-bg-color: rgba(0, 0, 0, 0.4);
-  --hover-color: rgba(92, 68, 42, 0.2);
+  --hover-color: rgba(92, 68, 42, 0.848);
   --important-color: #f8e9c0;
   --underscore-color: #5c442a;
   --box-shadow: 2px 2px 6px #000;
   --box-shadow-hover: 4px 4px 12px rgba(0, 0, 0, 0.6);
 }
 
-/* Applica le transizioni smooth */
+
 *,
 *::before,
 *::after {
   transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Applica le variabili CSS ai vari elementi */
+
 body {
   background-color: var(--background-color);
   color: var(--text-color);
@@ -135,7 +135,7 @@ input[type="number"] {
 }
 
 .number-input-container input[type="number"] {
-  padding-right: 60px; /* Spazio per i due bottoni */
+  padding-right: 60px; 
   width: 100%;
 }
 
@@ -243,10 +243,15 @@ input[type="number"] {
   background: var(--card-bg-color);
 }
 
-.table tr:hover, tr:hover {
+.table tbody tr:hover, tbody tr:hover {
   background-color: var(--hover-color);
 }
-
 .table tr:last-child td, tr:last-child td {
   border-bottom: 1px solid var(--border-color);
+}
+.table thead th {
+  font-weight: bold;
+  text-transform: uppercase;
+  background-color: var(--table-header-bg);
+  color: var(--text-color);
 }

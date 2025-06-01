@@ -173,6 +173,6 @@ $effect(() => {
 
 <style>
   .w-full {
-    width: 100%;
+    width: 30%;
   }
 </style>
