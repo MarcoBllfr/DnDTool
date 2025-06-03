@@ -1,6 +1,6 @@
 <script lang="ts">
 import { levelRules } from '$lib/data/LevelRules';
-import Icon, { _api } from "@iconify/svelte";
+import Icon from "@iconify/svelte";
 
 interface Giocatore {
   livello: number;
@@ -61,7 +61,6 @@ $effect(() => {
 
 
 {#snippet tabGiocatori()}
-<div class="table-card">
   <table class="table">
     <thead>
       <tr>
@@ -116,11 +115,9 @@ $effect(() => {
       {/each}
     </tbody>
   </table>
-</div>
 {/snippet}
 
 {#snippet tabExp()}
-<div class="table-card">
   <table class="table">
     <thead>
       <tr>
@@ -139,7 +136,6 @@ $effect(() => {
       </tr>
     </tbody>
   </table>
-</div>
 {/snippet}
 
 <div class="container">

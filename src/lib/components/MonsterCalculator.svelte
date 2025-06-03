@@ -65,7 +65,7 @@
 
 
 {#snippet tabMonster()}
-  <div class="table-card">
+
     <table class="table">
       <thead>
         <tr>
@@ -88,16 +88,16 @@
               </select>
             </td>
             <td>
-                <div class="number-input-container">
+                <div class="table-number-input-container">
                   <input
                     type="number"
                     min="1"
                     max="99"
                     bind:value={monster.quantity}
-                    class="w-full"
+                    class="table-number-input"
                     placeholder="1"
                   />
-                  <div class="number-input-buttons">
+                  <div class="table-number-input-buttons">
                     <button 
                       class="number-btn"
                       type="button"
@@ -129,11 +129,11 @@
         {/each}
       </tbody>
     </table>
-  </div>
+ 
 {/snippet}
 
 {#snippet monsterTabExp()}
-<div class="table-card">
+
     <table class="table">
       <thead>
         <tr>
@@ -150,7 +150,7 @@
         </tr>
       </tbody>
     </table>
-  </div>
+  
 {/snippet}
 
 <div class="container">
@@ -235,18 +235,80 @@
       {/if}
     </div>
   </div>
-  <style>
+  
+<style>
   .cr-select {
-  font-family: inherit;
-  background: var(--input-bg-color);
-  border: 1px solid var(--border-color);
-  border-radius: 4px;
-  padding: 0.5rem 0.75rem;
-  color: var(--text-color);
-  padding-right: 2rem;
-  cursor: pointer;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
-  min-width: 100px;
-}
+    font-family: inherit;
+    background: var(--input-bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    color: var(--text-color);
+    padding-right: 2rem;
+    cursor: pointer;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    min-width: 100px;
+    width: 100%;
+  }
 
-  </style>
+
+  .table-number-input-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    max-width: 120px;
+    margin: 0 auto;
+  }
+
+  .table-number-input {
+    font-family: inherit;
+    background: var(--input-bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 0.5rem;
+    color: var(--text-color);
+    width: 60px;
+    min-width: 50px;
+    text-align: center;
+  }
+
+  .table-number-input:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 2px rgba(139, 0, 0, 0.1);
+  }
+
+ 
+
+  .table-number-input-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .table-number-input-buttons .number-btn {
+    width: 24px;
+    height: 24px;
+    font-size: 12px;
+  }
+
+  @media (min-width: 768px) {
+    .table-number-input-container {
+      max-width: 140px;
+      gap: 10px;
+    }
+    
+    .table-number-input {
+      width: 70px;
+    }
+    
+    .table-number-input-buttons .number-btn {
+      width: 28px;
+      height: 28px;
+      font-size: 14px;
+    }
+  }
+</style>
