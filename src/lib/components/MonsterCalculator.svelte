@@ -70,14 +70,14 @@
       <thead>
         <tr>
           <th>Cr/Challenge Rating</th>
-          <th>quantity</th>
+          <th>number</th>
         </tr>
       </thead>
       <tbody>
         {#each listaMonster as monster}
           <tr>
             <td>
-              <select
+                <select
                 bind:value={monster.Cr}
                 class="cr-select"
                 aria-label="Challenge Rating"
@@ -154,8 +154,8 @@
 {/snippet}
 
 <div class="container">
-    <div class="card">
-      <h1 class="text-center mb-m">D&D Monster Calculator</h1>
+    <div class="card card monster-card">
+      <h1 class="text-center mb-m">Monster Calculator</h1>
       <div class="underscore mb-l"></div>
       
       <div class="mb-m">
@@ -201,7 +201,7 @@
         <div class="mb-m">
           <h3 class="mb-s">
             <Icon icon="mdi:sword" width="24" style="vertical-align: middle; margin-right: 8px;" />
-            Party Configuration
+            Group Configuration
           </h3>
           {@render tabMonster()}
         </div>
@@ -236,7 +236,17 @@
     </div>
   </div>
   <style>
-    .w-full {
-      width: 30%;
-    }
+  .cr-select {
+  font-family: inherit;
+  background: var(--input-bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  padding: 0.5rem 0.75rem;
+  color: var(--text-color);
+  padding-right: 2rem;
+  cursor: pointer;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  min-width: 100px;
+}
+
   </style>

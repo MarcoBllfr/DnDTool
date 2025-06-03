@@ -19,6 +19,13 @@
   --underscore-color: #c0a060;
   --box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
   --box-shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.2);
+
+  --hero-title-color: #b8860b; 
+  --hero-accent-color: #daa520; 
+  
+ 
+  --monster-title-color: #8b0000; 
+  --monster-accent-color: #a52a2a; 
 }
 
 .dark-mode {
@@ -42,9 +49,17 @@
   --underscore-color: #5c442a;
   --box-shadow: 2px 2px 6px #000;
   --box-shadow-hover: 4px 4px 12px rgba(0, 0, 0, 0.6);
+
+   
+    --hero-title-color: #f8e9c0; 
+    --hero-accent-color: #f8e9c0;
+    
+   
+    --monster-title-color: #ff4444; 
+    --monster-accent-color: #ff6666; 
 }
 
-/* Reset e Base Styles */
+
 *,
 *::after,
 *::before {
@@ -143,6 +158,29 @@ li {
 
 p {
   margin-bottom: 1rem;
+}
+.hero-card h1 {
+  color: var(--hero-title-color) !important;
+}
+
+.hero-card .important {
+  color: var(--hero-title-color) !important;
+}
+
+.hero-card .underscore {
+  background-color: var(--hero-accent-color);
+}
+
+.monster-card h1 {
+  color: var(--monster-title-color) !important;
+}
+
+.monster-card .important {
+  color: var(--monster-title-color) !important;
+}
+
+.monster-card .underscore {
+  background-color: var(--monster-accent-color);
 }
 
 /* Utility Classes */
@@ -356,7 +394,7 @@ input[type="number"] {
   align-items: center;
   justify-content: center;
   transition: all 0.2s ease;
-  font-size: 12px;
+  font-size: 15px;
   line-height: 1;
   border-radius: 50%;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -391,7 +429,7 @@ input[type="number"] {
 .btn, button {
   display: inline-block;
   padding: 0.875rem 1.5rem;
-  font-size: 0.95rem;
+  font-size: 1rem;
   font-weight: 500;
   text-align: center;
   text-decoration: none;
@@ -467,7 +505,7 @@ input[type="number"] {
   border: 1px solid var(--border-color);
   padding: 0.6rem 0.4rem;
   text-align: center;
-  font-size: 0.85rem;
+  font-size: 0.95rem;
   color: var(--text-color);
 }
 
@@ -614,18 +652,18 @@ input[type="number"] {
 
   .table th, .table td, th, td {
     padding: 0.75rem 0.5rem;
-    font-size: 0.9rem;
+    font-size: 1rem;
   }
 
   .btn, button {
     padding: 0.75rem 1.5rem;
-    font-size: 1rem;
+    font-size: 1.2rem;
   }
 
   .number-btn {
     width: 32px;
     height: 32px;
-    font-size: 14px;
+    font-size: 15px;
   }
   
   .number-input-buttons {
@@ -667,7 +705,7 @@ input[type="number"] {
 
   .table th, .table td, th, td {
     padding: 1rem;
-    font-size: 1rem;
+    font-size: 1.5rem;
   }
   .number-input-container {
     gap: 16px; 

@@ -143,8 +143,8 @@ $effect(() => {
 {/snippet}
 
 <div class="container">
-  <div class="card">
-    <h1 class="text-center mb-m">D&D Experience Calculator</h1>
+  <div class="card card hero-card">
+    <h1 class="text-center mb-m">Heroes Calculator</h1>
     <div class="underscore mb-l"></div>
     
     <div class="mb-m">
