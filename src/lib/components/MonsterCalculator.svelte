@@ -1,11 +1,8 @@
 <script lang="ts">
-  import { getCrExperience, levelRules } from "$lib/data/LevelRules";
+  import { getCrExperience} from "$lib/data/LevelRules";
   import Icon from "@iconify/svelte";
   import { onMount } from "svelte";
-  interface Mostro {
-    Cr: string;
-    quantity: number;
-  }
+
 
   function monsterMultiplier(monsterCount: number): number {
     if (monsterCount === 1) return 1;

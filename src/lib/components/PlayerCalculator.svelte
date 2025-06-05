@@ -2,16 +2,7 @@
 import { levelRules } from '$lib/data/LevelRules';
 import Icon from "@iconify/svelte";
 
-interface Giocatore {
-  livello: number;
-}
 
-interface Difficulty {
-  facile: number;
-  medio: number;
-  difficile: number;
-  mortale: number;
-}
 
 type Difficolta = keyof Difficulty;
 
