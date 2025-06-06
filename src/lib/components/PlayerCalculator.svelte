@@ -3,7 +3,7 @@ import { levelRules } from '$lib/data/LevelRules';
 import Icon from "@iconify/svelte";
 
   import { browser } from '$app/environment';
-  import { loadDataPlayer, saveDataPlayer } from '$services/LocalStorage';
+  import { loadDataPlayer, resetPlayerData, saveDataPlayer } from '$services/LocalStorage';
 
 
 type Difficolta = keyof Difficulty;
@@ -68,6 +68,12 @@ if (browser) {
     listaPlayer = saved.players.listaPlayer;
     expTotale = saved.players.expTotale;
   }
+}
+function resetPlayer(){
+  const data=resetPlayerData();
+  numeroGiocatori=data.players.numeroGiocatori;
+  listaPlayer=data.players.listaPlayer;
+  expTotale = data.players.expTotale;
 }
 </script>
 
@@ -219,9 +225,9 @@ if (browser) {
       </div>
       
       <div class="text-center mt-m">
-        <button onclick={calcolaExp} class="btn btn-primary">
-          <Icon icon="mdi:calculator" width="20" style="vertical-align: middle; margin-right: 8px;" />
-          Recalculate Experience
+        <button onclick={resetPlayer} class="btn btn-primary">
+          <Icon icon="bx:reset" width="20" style="vertical-align: middle; margin-right: 8px;" />
+          Reset player
         </button>
       </div>
     {:else}

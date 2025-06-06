@@ -1,6 +1,6 @@
 <script lang="ts">
   import { getCrExperience} from "$lib/data/LevelRules";
-  import { loadMonsterData, saveMonsterData } from "$services/LocalStorage";
+  import { loadMonsterData, resetMonsterData, saveMonsterData } from "$services/LocalStorage";
   import Icon from "@iconify/svelte";
   import { onMount } from "svelte";
 
@@ -78,6 +78,14 @@
   "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", 
   "23", "24", "25", "26", "27", "28", "29", "30"
 ];
+function resetMonsters() {
+  const data = resetMonsterData();
+  monsterGroup = data.monsterGroup;
+  listaMonster = data.listaMonster;
+  expSum = data.expSum;
+  multiplierState = data.multiplierState;
+  totalExp = data.totalExp;
+}
 </script>
 
 
@@ -238,9 +246,9 @@
         </div>
         
         <div class="text-center mt-m">
-          <button onclick={expCalculation} class="btn btn-primary">
-            <Icon icon="mdi:calculator" width="20" style="vertical-align: middle; margin-right: 8px;" />
-            Recalculate Experience
+          <button onclick={resetMonsters} class="btn btn-primary">
+            <Icon icon="bx:reset" width="20" style="vertical-align: middle; margin-right: 8px;" />
+            Reset monster
           </button>
         </div>
       {:else}
