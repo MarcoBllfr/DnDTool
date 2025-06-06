@@ -1,5 +1,6 @@
 <script lang="ts">
   import { getCrExperience} from "$lib/data/LevelRules";
+  import { loadMonsterData, saveMonsterData } from "$services/LocalStorage";
   import Icon from "@iconify/svelte";
   import { onMount } from "svelte";
 
@@ -33,6 +34,14 @@
   }
 
   onMount(() => {
+    const saved = loadMonsterData();
+  if (saved) {
+    monsterGroup = saved.monsterGroup;
+    listaMonster = saved.listaMonster;
+    expSum = saved.expSum;
+    multiplierState = saved.multiplierState;
+    totalExp = saved.totalExp;
+  }
     addMonster();
   });
 
@@ -49,9 +58,20 @@
   }
 
   $effect(() => {
-    expCalculation();
-    addMonster() ;
-  });
+  expCalculation();
+  addMonster();
+
+  if (listaMonster.length > 0) {
+    saveMonsterData({
+      monsterGroup,
+      listaMonster,
+      expSum,
+      multiplierState,
+      totalExp,
+      lastSaved: new Date().toISOString()
+    });
+  }
+});
 
   const crDisponibili: string[] = [
   "0", "1/8", "1/4", "1/2", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10",

@@ -2,6 +2,8 @@
 import { levelRules } from '$lib/data/LevelRules';
 import Icon from "@iconify/svelte";
 
+  import { browser } from '$app/environment';
+  import { loadDataPlayer, saveDataPlayer } from '$services/LocalStorage';
 
 
 type Difficolta = keyof Difficulty;
@@ -46,7 +48,27 @@ $effect(() => {
   }
 });
 
-
+$effect(() => {
+  
+  if (listaPlayer.length > 0) {
+    saveDataPlayer({
+      players: {
+        numeroGiocatori,
+        listaPlayer,
+        expTotale
+      },
+      lastSaved: new Date().toISOString()
+    });
+  }
+});
+if (browser) {
+  const saved = loadDataPlayer();
+  if (saved) {
+    numeroGiocatori = saved.players.numeroGiocatori;
+    listaPlayer = saved.players.listaPlayer;
+    expTotale = saved.players.expTotale;
+  }
+}
 </script>
 
 
