@@ -1,11 +1,12 @@
 <script>
-  import { MonsterCalc, PlayerCalc } from "$lib/components";
+  import { MonsterCalc, PlayerCalc, EncounterOutcome } from "$lib/components";
   const { data } = $props();
 </script>
 
 <div class="calc-container">
   <PlayerCalc />
   <MonsterCalc />
+  <EncounterOutcome />
 </div>
 
 <style>
