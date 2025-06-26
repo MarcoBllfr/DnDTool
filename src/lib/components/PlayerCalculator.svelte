@@ -8,7 +8,11 @@ import Icon from "@iconify/svelte";
 
 type Difficolta = keyof Difficulty;
 
-let numeroGiocatori = $state(1);
+
+let { 
+  numeroGiocatori = $bindable(1),
+  
+  } = $props();
 let listaPlayer = $state<Giocatore[]>([]);
 
 const difficoltaList: Difficolta[] = ['facile', 'medio', 'difficile', 'mortale'];
@@ -78,62 +82,62 @@ function resetPlayer(){
 </script>
 
 
-
 {#snippet tabGiocatori()}
-  <table class="table">
-    <thead>
-      <tr>
-        <th>Player</th>
-        <th>Level</th>
-      </tr>
-    </thead>
-    <tbody>
-      {#each listaPlayer as giocatore, index}
-      <tr>
-        
-        <td>{index + 1}</td>
-        <td>
-          <div class="number-input-container">
-            <input
-              type="number"
-              min="1"
-              max="20"
-              bind:value={giocatore.livello}
-              class="w-full"
-              placeholder="1"
-            />
-            <div class="number-input-buttons">
-              <button 
-                class="number-btn"
-                type="button"
-                onclick={() => {
-                  if(giocatore.livello < 20){
-                    giocatore.livello += 1;
-                  }
-                }}
-                aria-label="Increment"
-              >
-                <Icon icon="mdi:chevron-up" width="14" />
-              </button>
-              <button 
-                class="number-btn"
-                type="button" 
-                onclick={() => {
-                  if(giocatore.livello > 1){
-                    giocatore.livello -= 1;
-                  }
-                }}
-                aria-label="Decrement"
-              >
-                <Icon icon="mdi:chevron-down" width="14" />
-              </button>
+  <div class="players-table-wrapper">
+    <table class="players-table">
+      <thead>
+        <tr>
+          <th>Player</th>
+          <th>Level</th>
+        </tr>
+      </thead>
+      <tbody>
+        {#each listaPlayer as giocatore, index}
+        <tr>
+          <td>{index + 1}</td>
+          <td>
+            <div class="number-input-container">
+              <input
+                type="number"
+                min="1"
+                max="20"
+                bind:value={giocatore.livello}
+                class="player-level-input"
+                placeholder="1"
+              />
+              <div class="number-input-buttons">
+                <button 
+                  class="number-btn"
+                  type="button"
+                  onclick={() => {
+                    if(giocatore.livello < 20){
+                      giocatore.livello += 1;
+                    }
+                  }}
+                  aria-label="Increment"
+                >
+                  <Icon icon="mdi:chevron-up" width="14" />
+                </button>
+                <button 
+                  class="number-btn"
+                  type="button" 
+                  onclick={() => {
+                    if(giocatore.livello > 1){
+                      giocatore.livello -= 1;
+                    }
+                  }}
+                  aria-label="Decrement"
+                >
+                  <Icon icon="mdi:chevron-down" width="14" />
+                </button>
+              </div>
             </div>
-          </div>
-        </td>
-      </tr>
-      {/each}
-    </tbody>
-  </table>
+          </td>
+        </tr>
+        {/each}
+      </tbody>
+    </table>
+  </div>
 {/snippet}
 
 {#snippet tabExp()}
@@ -243,5 +247,139 @@ function resetPlayer(){
 <style>
   .w-full {
     width: 30%;
+  }
+  .players-table-wrapper {
+    max-height: 300px; 
+    overflow-y: auto;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+  }
+
+  .players-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0;
+  }
+
+  .players-table thead {
+    position: sticky;
+    top: 0;
+    background: var(--card-bg-color, #fff);
+    z-index: 1;
+  }
+
+  .players-table thead th {
+    padding: 0.75rem;
+    border-bottom: 2px solid var(--border-color);
+    background: var(--card-bg-color, #fff);
+    text-align: center;
+  }
+
+  .players-table tbody tr {
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .players-table tbody tr:last-child {
+    border-bottom: none;
+  }
+
+  .players-table tbody td {
+    padding: 0.75rem;
+    text-align: center;
+  }
+
+  .number-input-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    max-width: 120px;
+    margin: 0 auto;
+  }
+
+  .player-level-input {
+    font-family: inherit;
+    background: var(--input-bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 0.5rem;
+    color: var(--text-color);
+    width: 60px;
+    min-width: 50px;
+    text-align: center;
+  }
+
+  .player-level-input:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 2px rgba(139, 0, 0, 0.1);
+  }
+
+  .number-input-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .number-input-buttons .number-btn {
+    width: 24px;
+    height: 24px;
+    font-size: 12px;
+    background: var(--input-bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    color: var(--text-color);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease;
+  }
+
+  .number-input-buttons .number-btn:hover {
+    background: var(--accent-color);
+    color: white;
+  }
+
+  
+  .players-table-wrapper::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .players-table-wrapper::-webkit-scrollbar-track {
+    background: var(--input-bg-color, #f1f1f1);
+    border-radius: 4px;
+  }
+
+  .players-table-wrapper::-webkit-scrollbar-thumb {
+    background: var(--border-color, #c1c1c1);
+    border-radius: 4px;
+  }
+
+  .players-table-wrapper::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-color, #8b0000);
+  }
+
+  @media (min-width: 768px) {
+    .players-table-wrapper {
+      max-height: 320px; 
+    }
+    
+    .number-input-container {
+      max-width: 140px;
+      gap: 10px;
+    }
+    
+    .player-level-input {
+      width: 70px;
+    }
+    
+    .number-input-buttons .number-btn {
+      width: 28px;
+      height: 28px;
+      font-size: 14px;
+    }
   }
 </style>

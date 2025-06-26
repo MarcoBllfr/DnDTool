@@ -17,9 +17,12 @@
 
   let listaMonster = $state<Mostro[]>([]);
   let monsterGroup = $state(1);
-  let totalExp = $state(0);
-  let expSum = $state(0);
-  let multiplierState = $state(0);
+  let { 
+    totalExp = $bindable(0),
+    expSum = $bindable(0), 
+    multiplierState = $bindable(0),
+    monsterQuantity = $bindable(0)
+  } = $props();
 
   function addMonster() {
     if (monsterGroup > listaMonster.length) {
@@ -35,13 +38,13 @@
 
   onMount(() => {
     const saved = loadMonsterData();
-  if (saved) {
-    monsterGroup = saved.monsterGroup;
-    listaMonster = saved.listaMonster;
-    expSum = saved.expSum;
-    multiplierState = saved.multiplierState;
-    totalExp = saved.totalExp;
-  }
+    if (saved) {
+      monsterGroup = saved.monsterGroup;
+      listaMonster = saved.listaMonster;
+      expSum = saved.expSum;
+      multiplierState = saved.multiplierState;
+      totalExp = saved.totalExp;
+    }
     addMonster();
   });
 
@@ -55,6 +58,7 @@
     expSum = tempExp;
     multiplierState = monsterMultiplier(totalMonster);
     totalExp = expSum * multiplierState ;
+    monsterQuantity = totalMonster;
   }
 
   $effect(() => {
@@ -90,7 +94,7 @@ function resetMonsters() {
 
 
 {#snippet tabMonster()}
-
+  <div class="table-wrapper">
     <table class="table">
       <thead>
         <tr>
@@ -154,7 +158,7 @@ function resetMonsters() {
         {/each}
       </tbody>
     </table>
- 
+  </div>
 {/snippet}
 
 {#snippet monsterTabExp()}
@@ -261,79 +265,188 @@ function resetMonsters() {
     </div>
   </div>
   
-<style>
-  .cr-select {
-    font-family: inherit;
-    background: var(--input-bg-color);
-    border: 1px solid var(--border-color);
-    border-radius: 4px;
-    padding: 0.5rem 0.75rem;
-    color: var(--text-color);
-    padding-right: 2rem;
-    cursor: pointer;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-    min-width: 100px;
-    width: 100%;
-  }
-
-
-  .table-number-input-container {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    width: 100%;
-    max-width: 120px;
-    margin: 0 auto;
-  }
-
-  .table-number-input {
-    font-family: inherit;
-    background: var(--input-bg-color);
-    border: 1px solid var(--border-color);
-    border-radius: 4px;
-    padding: 0.5rem;
-    color: var(--text-color);
-    width: 60px;
-    min-width: 50px;
-    text-align: center;
-  }
-
-  .table-number-input:focus {
-    outline: none;
-    border-color: var(--accent-color);
-    box-shadow: 0 0 0 2px rgba(139, 0, 0, 0.1);
-  }
-
- 
-
-  .table-number-input-buttons {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-  }
-
-  .table-number-input-buttons .number-btn {
-    width: 24px;
-    height: 24px;
-    font-size: 12px;
-  }
-
-  @media (min-width: 768px) {
+  <style>
+    .table-wrapper {
+      max-height: 300px; 
+      overflow-y: auto;
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+    }
+  
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 0;
+    }
+  
+    .table thead {
+      position: sticky;
+      top: 0;
+      background: var(--card-bg-color, #fff);
+      z-index: 1;
+    }
+  
+    .table thead th {
+      padding: 0.75rem;
+      border-bottom: 2px solid var(--border-color);
+      background: var(--card-bg-color, #fff);
+    }
+  
+    .table tbody tr {
+      border-bottom: 1px solid var(--border-color);
+    }
+  
+    .table tbody tr:last-child {
+      border-bottom: none;
+    }
+  
+    .table tbody td {
+      padding: 0.75rem;
+    }
+  
+    .cr-select {
+      font-family: inherit;
+      background: var(--input-bg-color);
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      padding: 0.5rem 0.75rem;
+      color: var(--text-color);
+      padding-right: 2rem;
+      cursor: pointer;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      min-width: 100px;
+      width: 100%;
+    }
+  
     .table-number-input-container {
-      max-width: 140px;
-      gap: 10px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      max-width: 120px;
+      margin: 0 auto;
     }
-    
+  
     .table-number-input {
-      width: 70px;
+      font-family: inherit;
+      background: var(--input-bg-color);
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      padding: 0.5rem;
+      color: var(--text-color);
+      width: 60px;
+      min-width: 50px;
+      text-align: center;
     }
-    
+  
+    .table-number-input:focus {
+      outline: none;
+      border-color: var(--accent-color);
+      box-shadow: 0 0 0 2px rgba(139, 0, 0, 0.1);
+    }
+  
+    .table-number-input-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+  
     .table-number-input-buttons .number-btn {
-      width: 28px;
-      height: 28px;
-      font-size: 14px;
+      width: 24px;
+      height: 24px;
+      font-size: 12px;
+      background: var(--input-bg-color);
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      color: var(--text-color);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.2s ease;
     }
+  
+    .table-number-input-buttons .number-btn:hover {
+      background: var(--accent-color);
+      color: white;
+    }
+  
+    
+    .table-wrapper::-webkit-scrollbar {
+      width: 8px;
+    }
+  
+    .table-wrapper::-webkit-scrollbar-track {
+      background: var(--input-bg-color, #f1f1f1);
+      border-radius: 4px;
+    }
+  
+    .table-wrapper::-webkit-scrollbar-thumb {
+      background: var(--border-color, #c1c1c1);
+      border-radius: 4px;
+    }
+  
+    .table-wrapper::-webkit-scrollbar-thumb:hover {
+      background: var(--accent-color, #8b0000);
+    }
+    .number-input-buttons .number-btn {
+  width: 24px;
+  height: 24px;
+  font-size: 12px;
+  background: var(--input-bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  color: var(--text-color);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+}
+
+.number-input-buttons .number-btn:hover {
+  background: var(--accent-color);
+  color: white;
+}
+    @media (min-width: 768px) {
+      .table-wrapper {
+        max-height: 320px; 
+      }
+      
+      .table-number-input-container {
+        max-width: 140px;
+        gap: 10px;
+      }
+      
+      .table-number-input {
+        width: 70px;
+      }
+      
+      .table-number-input-buttons .number-btn {
+        width: 28px;
+        height: 28px;
+        font-size: 14px;
+        background: var(--input-bg-color);
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        color: var(--text-color);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background-color 0.2s ease;
+      }
+  
+      .table-number-input-buttons .number-btn:hover {
+        background: var(--accent-color);
+        color: white;
+      }
+      .number-input-buttons .number-btn {
+    width: 28px;
+    height: 28px;
+    font-size: 14px;
   }
-</style>
+    }
+  </style>

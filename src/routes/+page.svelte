@@ -1,12 +1,29 @@
-<script>
+<script lang="ts">
   import { MonsterCalc, PlayerCalc, EncounterOutcome } from "$lib/components";
-  const { data } = $props();
+  let totalExp = $state(0);//totale exp mostri
+  let expSum = $state(0); //somma exp mostri
+  let multiplierState = $state(0);
+  let monsterQuantity=$state(0);
+  let numeroGiocatori = $state(1);
+
 </script>
 
 <div class="calc-container">
-  <PlayerCalc />
-  <MonsterCalc />
-  <EncounterOutcome />
+  <PlayerCalc  bind:numeroGiocatori={numeroGiocatori}
+  />
+
+  <MonsterCalc 
+  bind:totalExp={totalExp}
+    bind:expSum={expSum}
+    bind:multiplierState={multiplierState}
+    bind:monsterQuantity={monsterQuantity}
+    />
+
+  <EncounterOutcome 
+  bind:monsterTotalExp={totalExp}
+    bind:expToGive={expSum}
+    bind:monsterCount={monsterQuantity}
+    bind:playerCount={numeroGiocatori}/>
 </div>
 
 <style>

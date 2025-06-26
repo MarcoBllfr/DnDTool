@@ -1,5 +1,6 @@
 import { browser } from '$app/environment';
 
+
 const STORAGE_KEY = 'dnd-player-data';
 
 interface SavedData {
