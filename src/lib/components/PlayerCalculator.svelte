@@ -11,18 +11,17 @@ type Difficolta = keyof Difficulty;
 
 let { 
   numeroGiocatori = $bindable(1),
-  
+  expTotale= $bindable<Difficulty>({
+    facile: 0,
+    medio: 0,
+    difficile: 0,
+    mortale: 0
+  })
   } = $props();
 let listaPlayer = $state<Giocatore[]>([]);
 
 const difficoltaList: Difficolta[] = ['facile', 'medio', 'difficile', 'mortale'];
 
-let expTotale: Difficulty = $state({
-  facile: 0,
-  medio: 0,
-  difficile: 0,
-  mortale: 0
-});
 
 // Usa $effect per aggiornare listaPlayer al cambiamento di numeroGiocatori
 $effect(() => {

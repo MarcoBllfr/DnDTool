@@ -22,15 +22,16 @@
     monsterTotalExp = $bindable(0),
     expToGive = $bindable(0),
     monsterCount = $bindable(0),
-    playerCount = $bindable(0)
-  } = $props();
-
-  let playerExpThresholds: Difficulty = $state({
+    playerCount = $bindable(0),
+    playerExpThresholds= $bindable<Difficulty>({
     facile: 0,
     medio: 0,
     difficile: 0,
     mortale: 0
-  });
+  })
+  } = $props();
+
+
 
   let encounterDifficulty: EncounterDifficulty = $state({
     level: 'trivial',
@@ -40,14 +41,15 @@
     advice: 'Set up players and monsters to calculate the difficulty'
   });
 
-  let isDataLoaded = $state(false);
+  
  
 
 
   // Effetto reattivo che si aggiorna quando cambiano monsterTotalExp o playerExpThresholds
   $effect(() => {
-    if (playerExpThresholds.facile > 0 && isDataLoaded) {
-      encounterDifficulty = calculateEncounterDifficulty(playerExpThresholds, monsterTotalExp);
+    const thresholds = playerExpThresholds as Difficulty;
+    if (playerExpThresholds.facile > 0) {
+      encounterDifficulty = calculateEncounterDifficulty(thresholds , monsterTotalExp);
     }
   });
 
@@ -112,15 +114,7 @@
     }
   }
 
-  onMount(() => {
-    // Carica solo i dati dei player
-    const playerData = loadDataPlayer();
-    if (playerData) {
-      playerExpThresholds = playerData.players.expTotale;
-      playerCount = playerData.players.numeroGiocatori;
-      isDataLoaded = true;
-    }
-  });
+
 
   function getProgressPercentage(): number {
     if (playerExpThresholds.mortale === 0) return 0;
@@ -145,7 +139,7 @@
     </h1>
     <div class="underscore mb-l"></div>
 
-    {#if isDataLoaded}
+   
       
       <div class="stats-grid mb-m">
         <div class="stat-item">
@@ -238,13 +232,6 @@
       </tr>
     </tbody>
   </table>
-</div>
-{/if}
-{:else}
-<div class="loading-state text-center">
-  <Icon icon="mdi:loading" width="48" style="color: var(--accent-color); animation: spin 2s linear infinite;" />
-  <h3 class="mt-s">Loading encounter data...</h3>
-  <p class="dark-grey">Set up players and monsters to view the difficulty</p>
 </div>
 {/if}
   </div>

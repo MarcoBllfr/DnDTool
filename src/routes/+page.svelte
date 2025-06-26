@@ -5,11 +5,17 @@
   let multiplierState = $state(0);
   let monsterQuantity=$state(0);
   let numeroGiocatori = $state(1);
-
+  let expTotale: Difficulty = $state({
+  facile: 0,
+  medio: 0,
+  difficile: 0,
+  mortale: 0
+});
 </script>
 
 <div class="calc-container">
   <PlayerCalc  bind:numeroGiocatori={numeroGiocatori}
+  bind:expTotale={expTotale}
   />
 
   <MonsterCalc 
@@ -23,7 +29,8 @@
   bind:monsterTotalExp={totalExp}
     bind:expToGive={expSum}
     bind:monsterCount={monsterQuantity}
-    bind:playerCount={numeroGiocatori}/>
+    bind:playerCount={numeroGiocatori}
+    bind:playerExpThresholds={expTotale}/>
 </div>
 
 <style>
