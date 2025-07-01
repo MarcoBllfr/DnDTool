@@ -39,7 +39,6 @@
     flex-direction: column;
     gap: 1rem;
     width: 100%;
-    max-width: 1400px;
     margin: 0 auto;
     padding: 0 1rem;
     box-sizing: border-box;
@@ -48,7 +47,6 @@
   @media (min-width: 768px) {
     .calc-container {
       flex-direction: row;
-      align-items: stretch;
       gap: 2rem;
       padding: 0 2rem;
     }

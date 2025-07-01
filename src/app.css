@@ -703,10 +703,12 @@ input[type="number"] {
     grid-template-columns: repeat(4, 1fr);
   }
 
+  
   .table th, .table td, th, td {
     padding: 1rem;
-    font-size: 1.5rem;
+    font-size: 1.1rem; 
   }
+  
   .number-input-container {
     gap: 16px; 
   }
