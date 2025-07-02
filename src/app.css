@@ -675,16 +675,17 @@ input[type="number"] {
 }
 
 @media (min-width: 1024px) {
+  
   h1 {
-    font-size: 60px;
+    font-size: 50px;
   }
   
   h2 {
-    font-size: 48px;
+    font-size: 32px;
   }
   
   h3 {
-    font-size: 32px;
+    font-size: 22px;
   }
 
   h4 {
@@ -716,14 +717,14 @@ input[type="number"] {
 
 @media (min-width: 1200px) {
   h1 {
-    font-size: 80px;
-  }
-  
-  h2 {
     font-size: 60px;
   }
   
+  h2 {
+    font-size: 50px;
+  }
+  
   h3 {
-    font-size: 40px;
+    font-size: 30px;
   }
 }

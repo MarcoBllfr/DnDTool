@@ -387,11 +387,7 @@
     background-color: rgba(34, 197, 94, 0.1) !important;
     color: var(--text-color);
   }
-
-  .loading-state {
-    padding: 2rem;
-  }
-
+  
   @keyframes spin {
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
