@@ -1,5 +1,5 @@
 <script lang="ts">
-  import CalculatorSection from "$components/section/CalculatorSection.svelte";
+  import {CalculatorSection, Button} from "$lib/components";
   let IsRendered = $state("CalcTool");
 </script>
 {#if IsRendered === "CalcTool" }
