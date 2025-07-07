@@ -16,9 +16,10 @@
       medio: 0,
       difficile: 0,
       mortale: 0
-    })
+    }),
+    listaPlayer = $bindable([])
     } = $props();
-  let listaPlayer = $state<Giocatore[]>([]);
+  
   
   const difficoltaList: Difficolta[] = ['facile', 'medio', 'difficile', 'mortale'];
   
@@ -95,6 +96,7 @@
       });
     }
   });
+  
   if (browser) {
     const saved = loadDataPlayer();
     if (saved) {

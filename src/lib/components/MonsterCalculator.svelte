@@ -5,24 +5,34 @@
   import { browser } from '$app/environment';
 
   function monsterMultiplier(monsterCount: number): number {
-    if (monsterCount === 1) return 1;
-    if (monsterCount === 2) return 1.5;
-    if (monsterCount >= 3 && monsterCount <= 6) return 2;
-    if (monsterCount >= 7 && monsterCount <= 10) return 2.5;
-    if (monsterCount >= 11 && monsterCount <= 14) return 3;
-    if (monsterCount >= 15) return 4;
-    return 0;
+  switch (true) {
+    case monsterCount === 1:
+      return 1;
+    case monsterCount === 2:
+      return 1.5;
+    case monsterCount >= 3 && monsterCount <= 6:
+      return 2;
+    case monsterCount >= 7 && monsterCount <= 10:
+      return 2.5;
+    case monsterCount >= 11 && monsterCount <= 14:
+      return 3;
+    case monsterCount >= 15:
+      return 4;
+    default:
+      return 0;
   }
+}
 
   let { 
     totalExp = $bindable(0),
     expSum = $bindable(0), 
     multiplierState = $bindable(0),
-    monsterQuantity = $bindable(0)
+    monsterQuantity = $bindable(0),
+    listaMonster = $bindable([]),
+    monsterGroup = $bindable(0)
   } = $props();
 
-  let listaMonster = $state<Mostro[]>([]);
-  let monsterGroup = $state(1);
+
 
   const crDisponibili: string[] = [
     "0", "1/8", "1/4", "1/2", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10",
