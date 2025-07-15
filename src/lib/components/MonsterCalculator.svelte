@@ -309,14 +309,14 @@
           class="main-input"
           placeholder="1"
           min="1"
-          max="10"
+          max="99"
         />
         <div class="number-input-buttons">
           <button 
             class="number-btn"
             type="button"
             onclick={() => {
-                if (monsterGroup < 10) monsterGroup += 1;
+                if (monsterGroup < 99) monsterGroup += 1;
             }}
             aria-label="Increment"
           >

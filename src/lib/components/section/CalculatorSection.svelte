@@ -1,88 +1,74 @@
 <script lang="ts">
-  import { MonsterCalc, PlayerCalc, EncounterOutcome } from "$lib/components";
-  import { buildUrlFromState, applyStateFromUrl } from "$lib/services/ShareService"
+  import { MonsterCalc, PlayerCalc, EncounterOutcome,ShareButton } from "$lib/components";
+  import { buildUrlFromState, applyStateFromUrl } from "$lib/services/ShareService";
   import { onMount } from "svelte";
 
-  let totalExp = $state(0);//totale exp mostri
-  let expSum = $state(0); //somma exp mostri
-  let multiplierState = $state(0);
-  let monsterQuantity=$state(0);
-  let numeroGiocatori = $state(1);
-  let listaPlayer = $state<Giocatore[]>([]);
-  let expTotale: Difficulty = $state({
-  facile: 0,
-  medio: 0,
-  difficile: 0,
-  mortale: 0
-});
-let listaMonster = $state<Mostro[]>([]);
-let monsterGroup = $state(1);
-
-
-const stateSetters = new Map<string, (value: any) => void>([
-  ['totalExp',         (v) => totalExp = +v],
-  ['expSum',           (v) => expSum = +v],
-  ['multiplierState',  (v) => multiplierState = +v],
-  ['monsterQuantity',  (v) => monsterQuantity = +v],
-  ['numeroGiocatori',  (v) => numeroGiocatori = +v],
-  ['expTotale',        (v) => expTotale = v],
-  ['listaPlayer',      (v) => listaPlayer = v],
-  ['listaMonster',      (v) => listaMonster = v],
-  ['monsterGroup',      (v) => monsterGroup = v],
-]);
-
-function getFullUrlFromState(params: Record<string, any>) {
-  const base = `${window.location.origin}${window.location.pathname}`;
-  return buildUrlFromState(base, params);
-}
-function getCurrentUrl() {
-  return getFullUrlFromState({
-    totalExp,
-    expSum,
-    multiplierState,
-    monsterQuantity,
-    numeroGiocatori,
-    expTotale,
-    listaPlayer,
-    listaMonster,
-    monsterGroup
+  let calcState: CalcState = $state({
+    totalExp: 0,
+    expSum: 0,
+    multiplierState: 0,
+    monsterQuantity: 0,
+    numeroGiocatori: 1,
+    expTotale: {
+      facile: 0,
+      medio: 0,
+      difficile: 0,
+      mortale: 0
+    },
+    listaPlayer: [],
+    listaMonster: [],
+    monsterGroup: 1
   });
-}
-function setVar(key: string, value: any) {
-  const setter = stateSetters.get(key);
-  if (setter) setter(value);
-}
-onMount(() => {
-  applyStateFromUrl(window.location.search, setVar);
-});
+
+  const stateSetters = new Map<keyof CalcState, (value: any) => void>([
+    ['totalExp',         (v) => calcState.totalExp = +v],
+    ['expSum',           (v) => calcState.expSum = +v],
+    ['multiplierState',  (v) => calcState.multiplierState = +v],
+    ['monsterQuantity',  (v) => calcState.monsterQuantity = +v],
+    ['numeroGiocatori',  (v) => calcState.numeroGiocatori = +v],
+    ['expTotale',        (v) => calcState.expTotale = v],
+    ['listaPlayer',      (v) => calcState.listaPlayer = v],
+    ['listaMonster',     (v) => calcState.listaMonster = v],
+    ['monsterGroup',     (v) => calcState.monsterGroup = +v],
+  ]);
+
+  function setVar(key: string, value: any) {
+    if (stateSetters.has(key as keyof CalcState)) {
+      const setter = stateSetters.get(key as keyof CalcState);
+      setter?.(value);
+    }
+  }
+
+  onMount(() => {
+    applyStateFromUrl(window.location.search, setVar);
+  });
 </script>
 
-<button onclick={() => navigator.clipboard.writeText(getCurrentUrl())}>
-  Share this config
-</button>
-  <div class="calc-container">
+<ShareButton calcState={calcState} />
+
+<div class="calc-container">
 
   <PlayerCalc  
-    bind:numeroGiocatori={numeroGiocatori}
-    bind:expTotale={expTotale}
-    bind:listaPlayer={listaPlayer}
+    bind:numeroGiocatori={calcState.numeroGiocatori}
+    bind:expTotale={calcState.expTotale}
+    bind:listaPlayer={calcState.listaPlayer}
   />
 
   <MonsterCalc 
-    bind:totalExp={totalExp}
-    bind:expSum={expSum}
-    bind:multiplierState={multiplierState}
-    bind:monsterQuantity={monsterQuantity}
-    bind:listaMonster={listaMonster}
-    bind:monsterGroup={monsterGroup}
+    bind:totalExp={calcState.totalExp}
+    bind:expSum={calcState.expSum}
+    bind:multiplierState={calcState.multiplierState}
+    bind:monsterQuantity={calcState.monsterQuantity}
+    bind:listaMonster={calcState.listaMonster}
+    bind:monsterGroup={calcState.monsterGroup}
   />
 
   <EncounterOutcome 
-    bind:monsterTotalExp={totalExp}
-    bind:expToGive={expSum}
-    bind:monsterCount={monsterQuantity}
-    bind:playerCount={numeroGiocatori}
-    bind:playerExpThresholds={expTotale}
+    bind:monsterTotalExp={calcState.totalExp}
+    bind:expToGive={calcState.expSum}
+    bind:monsterCount={calcState.monsterQuantity}
+    bind:playerCount={calcState.numeroGiocatori}
+    bind:playerExpThresholds={calcState.expTotale}
   />
 </div>
 

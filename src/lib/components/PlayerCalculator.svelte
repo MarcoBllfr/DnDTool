@@ -217,14 +217,14 @@
             class="main-input"
             placeholder="1"
             min="1"
-            max="8"
+            max="13"
           />
           <div class="number-input-buttons">
             <button 
               class="number-btn"
               type="button"
               onclick={() => {
-                  if (numeroGiocatori < 8) numeroGiocatori += 1;
+                  if (numeroGiocatori < 13) numeroGiocatori += 1;
               }}
               aria-label="Increment"
             >
