@@ -1,8 +1,11 @@
 <script lang="ts">
   import { buildUrlFromState } from '$lib/services/ShareService';
   import Icon from "@iconify/svelte";
+
   export let calcState: CalcState;
+  
   let showCopied = false;
+
   function getCurrentUrl() {
     const base = `${window.location.origin}${window.location.pathname}`;
     return buildUrlFromState(base, calcState);
