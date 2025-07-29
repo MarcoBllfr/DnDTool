@@ -1,5 +1,5 @@
 <script lang="ts">
-  import {CalculatorSection, Button, NavBar} from "$lib/components";
+  import {CalculatorSection, Button, NavBar, MonsterCard} from "$lib/components";
   let IsRendered = $state("CalcTool");
 </script>
 <NavBar bind:IsRendered = {IsRendered} />
@@ -8,7 +8,7 @@
 {/if}
 {#if IsRendered === "MonstersGrimoire" }
  <div>
-  this is the Monsters Grimoire
+  <MonsterCard />
  </div>
 {/if}
 {#if IsRendered === "home" }
