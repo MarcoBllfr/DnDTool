@@ -1,17 +1,88 @@
 <script lang="ts">
-  import monsters from '$lib/data/5e_monsters.json';
+  import monsters from "$lib/data/5e_monsters.json";
   import Icon from "@iconify/svelte";
-  
+
   const allMonsters: Monster[] = monsters;
-  const itemsPerPage = 8;
-  let currentPage = 1;
+  const itemsPerPage = 6;
 
-  const totalPages = Math.ceil(allMonsters.length / itemsPerPage);
+  let currentPage = $state(1);
+  let searchBar = $state("");
+  let filteredCr = $state("");
+  let sortBy = $state("name");
 
-  $: paginatedMonsters = allMonsters.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
+  const crDisponibili: string[] = [
+    "0",
+    "1/8",
+    "1/4",
+    "1/2",
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "10",
+    "11",
+    "12",
+    "13",
+    "14",
+    "15",
+    "16",
+    "17",
+    "18",
+    "19",
+    "20",
+    "21",
+    "22",
+    "23",
+    "24",
+    "25",
+    "26",
+    "27",
+    "28",
+    "29",
+    "30",
+  ];
+
+  let filteredMonsters = $derived.by(() => {
+    const filtered = allMonsters.filter((m) => {
+      const matchesName = m.name
+        .toLowerCase()
+        .includes(searchBar.toLowerCase());
+      const cr = m.Challenge.split(" ")[0];
+      const matchesCr = filteredCr === "" || cr === filteredCr;
+      return matchesName && matchesCr;
+    });
+
+    return filtered.sort((a, b) => {
+      if (sortBy === "name") {
+        return a.name.localeCompare(b.name);
+      } else {
+        const crA = a.Challenge.split(" ")[0];
+        const crB = b.Challenge.split(" ")[0];
+        const indexA = crDisponibili.indexOf(crA);
+        const indexB = crDisponibili.indexOf(crB);
+        return (
+          (indexA === -1 ? Infinity : indexA) -
+          (indexB === -1 ? Infinity : indexB)
+        );
+      }
+    });
+  });
+
+  // Derived: total pages based on filtered results
+  let totalPages = $derived.by(() =>
+    Math.max(1, Math.ceil(filteredMonsters.length / itemsPerPage))
   );
+
+  // Derived: current page's monster slice
+  let paginatedMonsters = $derived.by(() => {
+    const start = (currentPage - 1) * itemsPerPage;
+    return filteredMonsters.slice(start, start + itemsPerPage);
+  });
 
   function nextPage() {
     if (currentPage < totalPages) currentPage++;
@@ -23,9 +94,54 @@
 </script>
 
 <div class="container">
-  <div class="monster-list-header">
+<div class="monster-list-header">
     <h1 class="text-center mb-m">The Monsters</h1>
     <div class="underscore mb-l"></div>
+    
+    <div class="filter-controls">
+      <div class="filter-row">
+        <div class="search-container">
+          <input 
+            type="text" 
+            bind:value={searchBar}
+            class="search-input"
+            placeholder="Search monsters..."
+          />
+        </div>
+        
+        <select
+          bind:value={filteredCr}
+          class="cr-select"
+          aria-label="Challenge Rating"
+        >
+          <option value="">All CR</option>
+          {#each crDisponibili as cr}
+            <option value={cr}>CR {cr}</option>
+          {/each}
+        </select>
+      </div>
+      
+      <div class="filter-row">
+        <div class="sort-controls">
+          <button 
+            onclick={() => (sortBy = "cr")} 
+            class="sort-btn"
+            class:active={sortBy === "cr"}
+          >
+            <Icon icon="mdi:chart-bar" width="18" />
+            Order by CR
+          </button>
+          <button
+            onclick={() => (sortBy = "name")}
+            class="sort-btn"
+            class:active={sortBy === "name"}
+          >
+            <Icon icon="mdi:sort-alphabetical-ascending" width="18" />
+            Order by Name
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div class="monsters-grid">
@@ -35,20 +151,20 @@
         <div class="monster-image-box">
           <img src={monster.img_url} alt={monster.name} loading="lazy" />
         </div>
-        
+
         <div class="monster-stats">
           <div class="stat-item">
-            <Icon icon="mdi:shield" width="18" />
+            <Icon icon="mdi:s" width="18" />
             <span class="stat-label">CR:</span>
             <span class="stat-value important">{monster.Challenge}</span>
           </div>
-          
+
           <div class="stat-item">
-            <Icon icon="mdi:armor" width="18" />
+            <Icon icon="mdi:shield" width="18" />
             <span class="stat-label">CA:</span>
             <span class="stat-value">{monster["Armor Class"]}</span>
           </div>
-          
+
           <div class="stat-item">
             <Icon icon="mdi:heart" width="18" />
             <span class="stat-label">Hit Points:</span>
@@ -61,25 +177,25 @@
 
   <div class="pagination-wrapper">
     <div class="pagination">
-      <button 
-        class="pagination-btn" 
-        onclick={prevPage} 
+      <button
+        class="pagination-btn"
+        onclick={prevPage}
         disabled={currentPage === 1}
         aria-label="Previous page"
       >
         <Icon icon="mdi:chevron-left" width="20" />
         <span class="pagination-text">Previous</span>
       </button>
-      
+
       <div class="pagination-info">
         <span class="pagination-current">{currentPage}</span>
         <span class="pagination-separator">of</span>
         <span class="pagination-total">{totalPages}</span>
       </div>
-      
-      <button 
-        class="pagination-btn" 
-        onclick={nextPage} 
+
+      <button
+        class="pagination-btn"
+        onclick={nextPage}
         disabled={currentPage === totalPages}
         aria-label="Next page"
       >
@@ -107,6 +223,150 @@
     margin-bottom: 1rem;
   }
 
+  /* Filter Controls Styling */
+  .filter-controls {
+    background: var(--card-bg-color);
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: var(--box-shadow);
+    margin-bottom: 2rem;
+  }
+
+  .filter-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .filter-row:last-child {
+    margin-bottom: 0;
+  }
+
+  .search-container {
+    position: relative;
+    flex: 1;
+    min-width: 200px;
+    max-width: 300px;
+  }
+
+  .search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--secondary-text-color);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .search-input {
+    width: 100%;
+    padding: 0.75rem 1rem 0.75rem 2.5rem;
+    font-size: 1rem;
+    font-family: inherit;
+    background: var(--input-bg-color);
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    color: var(--text-color);
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+  }
+
+  .search-input::placeholder {
+    color: var(--secondary-text-color);
+    font-style: italic;
+  }
+
+  .search-input:focus {
+    outline: none;
+    border-color: var(--monster-accent-color);
+    box-shadow: 0 0 0 3px rgba(139, 0, 0, 0.1);
+  }
+
+  .dark-mode .search-input:focus {
+    box-shadow: 0 0 0 3px rgba(255, 68, 68, 0.2);
+  }
+
+  .cr-select {
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    font-family: inherit;
+    font-weight: 600;
+    background: var(--input-bg-color);
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    color: var(--text-color);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 140px;
+  }
+
+  .cr-select:focus {
+    outline: none;
+    border-color: var(--monster-accent-color);
+    box-shadow: 0 0 0 3px rgba(139, 0, 0, 0.1);
+  }
+
+  .dark-mode .cr-select:focus {
+    box-shadow: 0 0 0 3px rgba(255, 68, 68, 0.2);
+  }
+
+  .cr-select option {
+    background: var(--input-bg-color);
+    color: var(--text-color);
+    padding: 0.5rem;
+  }
+
+  .sort-controls {
+    display: flex;
+    gap: 0.5rem;
+    background: rgba(0, 0, 0, 0.05);
+    padding: 4px;
+    border-radius: 10px;
+    border: 2px solid var(--border-color);
+  }
+
+  .dark-mode .sort-controls {
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  .sort-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    font-family: inherit;
+    background: transparent;
+    color: var(--text-color);
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+  }
+
+  .sort-btn:hover {
+    background: var(--hover-color);
+    transform: translateY(-1px);
+  }
+
+  .sort-btn.active {
+    background: var(--monster-accent-color);
+    color: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .sort-btn.active:hover {
+    background: var(--monster-accent-color);
+    filter: brightness(1.1);
+  }
+
   .monsters-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -126,7 +386,7 @@
   }
 
   .monster-card::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
@@ -162,14 +422,14 @@
   }
 
   .monster-image-box::after {
-    content: '';
+    content: "";
     position: absolute;
     inset: 0;
     border-radius: 6px;
     background: linear-gradient(
-      135deg, 
-      transparent 0%, 
-      rgba(0,0,0,0.1) 100%
+      135deg,
+      transparent 0%,
+      rgba(0, 0, 0, 0.1) 100%
     );
     pointer-events: none;
   }
@@ -290,7 +550,32 @@
     color: var(--text-color);
   }
 
+  /* Responsive Design */
   @media (max-width: 480px) {
+    .filter-controls {
+      padding: 1rem;
+    }
+
+    .filter-row {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 1rem;
+    }
+
+    .search-container {
+      max-width: 100%;
+    }
+
+    .sort-controls {
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .sort-btn {
+      justify-content: center;
+      padding: 0.875rem 1rem;
+    }
+
     .monsters-grid {
       grid-template-columns: 1fr;
       gap: 1rem;
@@ -337,6 +622,41 @@
   }
 
   @media (min-width: 768px) {
+    .filter-controls {
+      padding: 2rem;
+    }
+
+    /* Layout orizzontale compatto su desktop - tutto in una riga */
+    .filter-controls {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .filter-row {
+      display: contents; /* Rimuove il wrapper per far fluire gli elementi */
+      margin-bottom: 0;
+    }
+
+    .search-container {
+      flex: 0 1 auto;
+      max-width: 250px;
+      min-width: 200px;
+    }
+
+    .cr-select {
+      flex-shrink: 0;
+      min-width: 120px;
+    }
+
+    .sort-controls {
+      flex-shrink: 0;
+      margin: 0;
+    }
+
     .container {
       padding: 2rem;
     }
