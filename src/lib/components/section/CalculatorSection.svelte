@@ -1,9 +1,11 @@
 <script lang="ts">
+  import { goto } from "$app/navigation";
   import { MonsterCalc, PlayerCalc, EncounterOutcome,ShareButton } from "$lib/components";
   import { buildUrlFromState, applyStateFromUrl } from "$lib/services/ShareService";
   import { onMount } from "svelte";
 
   let calcState: CalcState = $state({
+    renderStatus: "CalcTool",
     totalExp: 0,
     expSum: 0,
     multiplierState: 0,
@@ -21,6 +23,7 @@
   });
 
   const stateSetters = new Map<keyof CalcState, (value: any) => void>([
+    ['renderStatus',     (v) => calcState.renderStatus = String(v)],
     ['totalExp',         (v) => calcState.totalExp = +v],
     ['expSum',           (v) => calcState.expSum = +v],
     ['multiplierState',  (v) => calcState.multiplierState = +v],
@@ -41,6 +44,7 @@
 
   onMount(() => {
     applyStateFromUrl(window.location.search, setVar);
+    goto ("/"); //clean the url
   });
 </script>
 

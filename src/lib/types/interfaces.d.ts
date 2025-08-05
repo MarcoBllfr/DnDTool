@@ -16,6 +16,7 @@ interface Difficulty {
   }
 
   interface CalcState {
+  renderStatus:string;
   totalExp: number;
   expSum: number;
   multiplierState: number;
