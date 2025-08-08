@@ -3,14 +3,35 @@
   import { onMount } from "svelte";
   let IsRendered = $state("home");
 
- function getSectionFromUrl() {
-    const params = new URLSearchParams(window.location.search);
-    const renderStatus = params.get("renderStatus") as string;
+function base64UrlDecode(str: string): string {
+  str = str.replace(/-/g, '+').replace(/_/g, '/');
+  const pad = str.length % 4;
+  if (pad) {
+    str += '='.repeat(4 - pad);
+  }
+  return atob(str);
+}
+
+function getSectionFromUrl() {
+  const params = new URLSearchParams(window.location.search);
+  const encoded = params.get("s");
+
+  if (!encoded) return "home";
+
+  try {
+    const json = base64UrlDecode(encoded);
+    const parsed = JSON.parse(json);
+    const renderStatus = parsed.renderStatus;
+
     if (["home", "CalcTool", "MonstersGrimoire"].includes(renderStatus)) {
       return renderStatus;
     }
-    return "home";
+  } catch (e) {
+    console.error("Errore nel parsing di renderStatus da URL:", e);
   }
+
+  return "home";
+}
   onMount(() => {
     IsRendered = getSectionFromUrl();
   });

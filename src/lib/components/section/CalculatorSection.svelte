@@ -1,7 +1,7 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
   import { MonsterCalc, PlayerCalc, EncounterOutcome,ShareButton } from "$lib/components";
-  import { buildUrlFromState, applyStateFromUrl } from "$lib/services/ShareService";
+import { decodeStateFromUrl } from "$lib/services/ShareService";
   import { onMount } from "svelte";
 
   let calcState: CalcState = $state({
@@ -42,10 +42,15 @@
     }
   }
 
-  onMount(() => {
-    applyStateFromUrl(window.location.search, setVar);
-    goto ("/"); //clean the url
-  });
+ onMount(() => {
+  const decodedState = decodeStateFromUrl(window.location.search);
+  if (decodedState) {
+    Object.assign(calcState, decodedState);
+  }
+
+ 
+  goto("/", { replaceState: true });
+});
 </script>
 
 <ShareButton calcState={calcState} />
