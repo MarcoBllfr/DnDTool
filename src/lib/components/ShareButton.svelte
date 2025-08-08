@@ -1,29 +1,55 @@
 <script lang="ts">
- import { buildCompactUrl } from '$lib/services/ShareService';
+  import { buildCompactUrl } from '$lib/services/ShareService';
   import Icon from "@iconify/svelte";
 
   export let calcState: CalcState;
   
   let showCopied = false;
+  let isGenerating = false;
 
-  function getCurrentUrl() {
-  const base = `${window.location.origin}${window.location.pathname}`;
-  return buildCompactUrl(base, calcState);
-}
-  function copyLink() {
-    navigator.clipboard.writeText(getCurrentUrl());
-    showCopied = true;
-    setTimeout(() => {
-      showCopied = false;
-    }, 2000);
+  async function getCurrentUrl(): Promise<string> {
+    const base = `${window.location.origin}${window.location.pathname}`;
+    return await buildCompactUrl(base, calcState);
+  }
+
+  async function copyLink() {
+    if (isGenerating) return;
+    
+    try {
+      isGenerating = true;
+      const url = await getCurrentUrl();
+      await navigator.clipboard.writeText(url);
+      
+      showCopied = true;
+      setTimeout(() => {
+        showCopied = false;
+      }, 2000);
+    } catch (error) {
+      console.error('Failed to copy link:', error);
+      // Optionally show error feedback to user
+    } finally {
+      isGenerating = false;
+    }
   }
 </script>
 
 <div class="share-container">
-  <button onclick={copyLink} class="share-btn" aria-label="Share this configuration">
+  <button 
+    onclick={copyLink} 
+    class="share-btn" 
+    class:generating={isGenerating}
+    aria-label="Share this configuration"
+    disabled={isGenerating}
+  >
     <div class="share-btn-content">
-      <Icon icon="mdi:share-variant" width="20" />
-      <span class="share-btn-text">Share Configuration</span>
+      {#if isGenerating}
+        <Icon icon="mdi:loading" width="20" class="spin" />
+      {:else}
+        <Icon icon="mdi:share-variant" width="20" />
+      {/if}
+      <span class="share-btn-text">
+        {isGenerating ? 'Generating...' : 'Share Configuration'}
+      </span>
     </div>
     {#if showCopied}
       <div class="copied-indicator">
@@ -41,6 +67,7 @@
     justify-content: center;
     margin: 1rem 0;
   }
+  
   .share-btn {
     position: relative;
     display: inline-flex;
@@ -62,24 +89,39 @@
     min-width: 200px;
     overflow: hidden;
   }
-  .share-btn:hover {
+  
+  .share-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+  
+  .share-btn:not(:disabled):hover {
     background: var(--button-hover-bg);
     transform: translateY(-2px);
     box-shadow: var(--box-shadow-hover);
     border-color: var(--accent-color);
   }
-  .share-btn:active {
+  
+  .share-btn:not(:disabled):active {
     transform: translateY(0);
   }
+  
+  .share-btn.generating {
+    background: var(--button-bg-color);
+    transform: none;
+  }
+  
   .share-btn-content {
     display: flex;
     align-items: center;
     gap: 0.5rem;
     transition: all 0.3s ease;
   }
+  
   .share-btn-text {
     font-weight: 600;
   }
+  
   .copied-indicator {
     position: absolute;
     top: 50%;
@@ -99,6 +141,17 @@
     box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
     animation: fadeInOut 2s ease-in-out;
   }
+  
+  /* Spinning animation for loading icon */
+  :global(.spin) {
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  
   @keyframes fadeInOut {
     0% {
       opacity: 0;
@@ -137,7 +190,12 @@
       content: 'Share';
       margin-left: 0.5rem;
     }
+    
+    .generating .share-btn-content::after {
+      content: 'Loading...';
+    }
   }
+  
   @media (max-width: 320px) {
     .share-btn {
       padding: 0.625rem 1rem;
@@ -161,6 +219,7 @@
     outline: none;
     box-shadow: 0 0 0 3px rgba(139, 0, 0, 0.3);
   }
+  
   .dark-mode .share-btn:focus {
     box-shadow: 0 0 0 3px rgba(248, 233, 192, 0.3);
   }

@@ -1,7 +1,7 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
-  import { MonsterCalc, PlayerCalc, EncounterOutcome,ShareButton } from "$lib/components";
-import { decodeStateFromUrl } from "$lib/services/ShareService";
+  import { MonsterCalc, PlayerCalc, EncounterOutcome, ShareButton } from "$lib/components";
+  import { decodeStateFromUrl } from "$lib/services/ShareService";
   import { onMount } from "svelte";
 
   let calcState: CalcState = $state({
@@ -42,15 +42,23 @@ import { decodeStateFromUrl } from "$lib/services/ShareService";
     }
   }
 
- onMount(() => {
-  const decodedState = decodeStateFromUrl(window.location.search);
-  if (decodedState) {
-    Object.assign(calcState, decodedState);
+  async function loadStateFromUrl() {
+    try {
+      const decodedState = await decodeStateFromUrl(window.location.search);
+      if (decodedState) {
+        // Validate and merge the decoded state
+        Object.assign(calcState, decodedState);
+      }
+    } catch (error) {
+      console.error('Failed to load state from URL:', error);
+      // Optionally show error message to user or use default state
+    }
   }
 
- 
-  goto("/", { replaceState: true });
-});
+  onMount(async () => {
+    await loadStateFromUrl();
+    goto("/", { replaceState: true });
+  });
 </script>
 
 <ShareButton calcState={calcState} />
