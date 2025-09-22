@@ -145,34 +145,33 @@
   </div>
 
   <div class="monsters-grid">
-    {#each paginatedMonsters as monster}
-      <div class="card monster-card">
-        <h2 class="monster-name">{monster.name}</h2>
-        <div class="monster-image-box">
-          <img src={monster.img_url} alt={monster.name} loading="lazy" />
+   {#each paginatedMonsters as monster}
+  <a href={`/monsterInfo/${monster.name}`} class="monster-link">
+    <div class="card monster-card">
+      <h2 class="monster-name">{monster.name}</h2>
+      <div class="monster-image-box">
+        <img src={monster.img_url} alt={monster.name} loading="lazy" />
+      </div>
+      <div class="monster-stats">
+        <div class="stat-item">
+          <Icon icon="mdi:s" width="18" />
+          <span class="stat-label">CR:</span>
+          <span class="stat-value important">{monster.Challenge}</span>
         </div>
-
-        <div class="monster-stats">
-          <div class="stat-item">
-            <Icon icon="mdi:s" width="18" />
-            <span class="stat-label">CR:</span>
-            <span class="stat-value important">{monster.Challenge}</span>
-          </div>
-
-          <div class="stat-item">
-            <Icon icon="mdi:shield" width="18" />
-            <span class="stat-label">CA:</span>
-            <span class="stat-value">{monster["Armor Class"]}</span>
-          </div>
-
-          <div class="stat-item">
-            <Icon icon="mdi:heart" width="18" />
-            <span class="stat-label">Hit Points:</span>
-            <span class="stat-value">{monster["Hit Points"]}</span>
-          </div>
+        <div class="stat-item">
+          <Icon icon="mdi:shield" width="18" />
+          <span class="stat-label">CA:</span>
+          <span class="stat-value">{monster["Armor Class"]}</span>
+        </div>
+        <div class="stat-item">
+          <Icon icon="mdi:heart" width="18" />
+          <span class="stat-label">Hit Points:</span>
+          <span class="stat-value">{monster["Hit Points"]}</span>
         </div>
       </div>
-    {/each}
+    </div>
+  </a>
+{/each}
   </div>
 
   <div class="pagination-wrapper">
