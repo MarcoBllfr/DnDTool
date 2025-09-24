@@ -1,5 +1,5 @@
 <script lang="ts">
-  import {CalculatorSection, Button, NavBar, MonsterCard} from "$lib/components";
+  import {CalculatorSection, Button, NavBar,  MonstersGrimoire} from "$lib/components";
   import { decodeStateFromUrl } from "$lib/services/ShareService";
   import { onMount } from "svelte";
   
@@ -34,7 +34,7 @@
 {/if}
 {#if IsRendered === "MonstersGrimoire" }
  <div>
-  <MonsterCard />
+  <MonstersGrimoire />
  </div>
 {/if}
 {#if IsRendered === "home" }

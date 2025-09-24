@@ -1,42 +1,46 @@
 <script lang="ts">
   import Icon from "@iconify/svelte";
   import monsters from "$lib/data/5e_monsters.json";
+   import monstersIta from "$lib/data/5e_monsters_it.json";
   import { onMount } from 'svelte';
   import { page } from "$app/stores";
 
 
   const allMonsters: Monster[] = monsters;
-  
+  const allMonstersIt: Monster[] = monstersIta;
+  let monsterToUse = $state(allMonstersIt);
   let monster: Monster | null = $state(null);
   let loading = $state(true);
   let error = $state('');
-
+  let language= $state("it");
+ let {whatISee = $bindable()} = $props();
   onMount(() => {
-    const slug = $page.params.slug;
-    const monsterName = decodeURIComponent(slug);
-    
-    console.log('Cercando mostro:', monsterName);
-    console.log('Slug originale:', slug);
+    if(language == "it"){
+      monsterToUse=allMonstersIt
+    }else{
+      monsterToUse=allMonsters;
+    }
+   
     
     // Trova il mostro
-    const foundMonster = allMonsters.find(m => m.name === monsterName);
+    const foundMonster = monsterToUse.find(m => m.name === whatISee);
     
     if (foundMonster) {
       monster = foundMonster;
       console.log('Mostro trovato:', foundMonster.name);
     } else {
       // Prova con ricerca case-insensitive
-      const foundMonsterCaseInsensitive = allMonsters.find(m => 
-        m.name.toLowerCase() === monsterName.toLowerCase()
+      const foundMonsterCaseInsensitive = monsterToUse.find(m => 
+        m.name.toLowerCase() === whatISee.toLowerCase()
       );
       
       if (foundMonsterCaseInsensitive) {
         monster = foundMonsterCaseInsensitive;
         console.log('Mostro trovato (case-insensitive):', foundMonsterCaseInsensitive.name);
       } else {
-        console.error('Mostro non trovato:', monsterName);
+        console.error('Mostro non trovato:', whatISee);
         console.log('Primi 5 mostri disponibili:', allMonsters.slice(0, 5).map(m => m.name));
-        error = `Mostro "${monsterName}" non trovato`;
+        error = `Mostro "${whatISee}" non trovato`;
       }
     }
     
@@ -44,7 +48,8 @@
   });
 </script>
 
-{#if loading}
+{#if whatISee != ""}
+    {#if loading}
   <div class="loading-state">
     <div class="loading-spinner">
       <Icon icon="mdi:loading" width="48" class="spin" />
@@ -56,7 +61,7 @@
     <Icon icon="mdi:alert-circle" width="64" />
     <h1>Errore</h1>
     <p>{error}</p>
-    <a href="/monsters" class="back-link">← Torna alla lista mostri</a>
+    <button onclick={()=> whatISee ="monsterList"} class="back-link">← Torna alla lista mostri</button>
   </div>
 {:else if monster}
   <p>
@@ -215,10 +220,12 @@
     {/if}
     
     <div class="back-button">
-      <a href="/monsters">← Torna alla lista mostri</a>
+       <button onclick={()=> whatISee ="monsterList"} class="back-link">← Torna alla lista mostri</button>
     </div>
   </div>
 {/if}
+{/if}
+
 
 <style>
   /* Loading State */
