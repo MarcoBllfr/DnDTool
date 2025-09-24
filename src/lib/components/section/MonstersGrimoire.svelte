@@ -1,11 +1,15 @@
 <script lang="ts">
-  import {MonsterCard, MonsterInfo} from "$components";
-
-  let whatISee = $state("monsterList")
-  
+  import { MonsterCard, MonsterInfo } from "$components";
+  import { fade } from "svelte/transition";
+  let whatISee = $state("monsterList");
 </script>
-{#if whatISee==="monsterList"}
-    <MonsterCard bind:whatISee={whatISee}/>
-    {:else}
-    <MonsterInfo bind:whatISee={whatISee}/>
+
+{#if whatISee === "monsterList"}
+  <div transition:fade>
+    <MonsterCard bind:whatISee />
+  </div>
+{:else}
+  <div transition:fade>
+    <MonsterInfo bind:whatISee />
+  </div>
 {/if}

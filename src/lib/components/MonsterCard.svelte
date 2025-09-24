@@ -9,10 +9,8 @@
   let searchBar = $state("");
   let filteredCr = $state("");
   let sortBy = $state("name");
-  
-let { 
-    whatISee=$bindable()
-    } = $props();
+
+  let { whatISee = $bindable() } = $props();
 
   const crDisponibili: string[] = [
     "0",
@@ -95,27 +93,27 @@ let {
   function prevPage() {
     if (currentPage > 1) currentPage--;
   }
-  function changeRender(name:string){
-    whatISee=name;
+  function changeRender(name: string) {
+    whatISee = name;
   }
 </script>
 
 <div class="container">
-<div class="monster-list-header">
+  <div class="monster-list-header">
     <h1 class="text-center mb-m">The Monsters</h1>
     <div class="underscore mb-l"></div>
-    
+
     <div class="filter-controls">
       <div class="filter-row">
         <div class="search-container">
-          <input 
-            type="text" 
+          <input
+            type="text"
             bind:value={searchBar}
             class="search-input"
             placeholder="Search monsters..."
           />
         </div>
-        
+
         <select
           bind:value={filteredCr}
           class="cr-select"
@@ -127,11 +125,11 @@ let {
           {/each}
         </select>
       </div>
-      
+
       <div class="filter-row">
         <div class="sort-controls">
-          <button 
-            onclick={() => (sortBy = "cr")} 
+          <button
+            onclick={() => (sortBy = "cr")}
             class="sort-btn"
             class:active={sortBy === "cr"}
           >
@@ -152,36 +150,35 @@ let {
   </div>
 
   <div class="monsters-grid">
-{#each paginatedMonsters as monster}
-  <button
-    type="button"
-    class="card monster-card"
-    onclick={() => changeRender(monster.name)}
-  >
-    <h2 class="monster-name">{monster.name}</h2>
-    <div class="monster-image-box">
-      <img src={monster.img_url} alt={monster.name} loading="lazy" />
-    </div>
-    <div class="monster-stats">
-      <div class="stat-item">
-        <Icon icon="mdi:s" width="18" />
-        <span class="stat-label">CR:</span>
-        <span class="stat-value important">{monster.Challenge}</span>
-      </div>
-      <div class="stat-item">
-        <Icon icon="mdi:shield" width="18" />
-        <span class="stat-label">CA:</span>
-        <span class="stat-value">{monster["Armor Class"]}</span>
-      </div>
-      <div class="stat-item">
-        <Icon icon="mdi:heart" width="18" />
-        <span class="stat-label">Hit Points:</span>
-        <span class="stat-value">{monster["Hit Points"]}</span>
-      </div>
-    </div>
-  </button>
-{/each}
-
+    {#each paginatedMonsters as monster}
+      <button
+        type="button"
+        class="card monster-card"
+        onclick={() => changeRender(monster.name)}
+      >
+        <h2 class="monster-name">{monster.name}</h2>
+        <div class="monster-image-box">
+          <img src={monster.img_url} alt={monster.name} loading="lazy" />
+        </div>
+        <div class="monster-stats">
+          <div class="stat-item">
+            <Icon icon="mdi:s" width="18" />
+            <span class="stat-label">CR:</span>
+            <span class="stat-value important">{monster.Challenge}</span>
+          </div>
+          <div class="stat-item">
+            <Icon icon="mdi:shield" width="18" />
+            <span class="stat-label">CA:</span>
+            <span class="stat-value">{monster["Armor Class"]}</span>
+          </div>
+          <div class="stat-item">
+            <Icon icon="mdi:heart" width="18" />
+            <span class="stat-label">Hit Points:</span>
+            <span class="stat-value">{monster["Hit Points"]}</span>
+          </div>
+        </div>
+      </button>
+    {/each}
   </div>
 
   <div class="pagination-wrapper">
