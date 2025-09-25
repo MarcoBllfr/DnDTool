@@ -6,50 +6,59 @@
 
   const allMonsters: Monster[] = monsters;
   const allMonstersIt: Monster[] = monstersIta;
-  let monsterToUse = $state(allMonstersIt);
+
+  let monsterToUse: Monster[] = $state(allMonstersIt);
   let monster: Monster | null = $state(null);
   let loading = $state(true);
   let error = $state("");
-  let language = $state("it");
-  let { whatISee = $bindable() } = $props();
-  onMount(() => {
-    if (language == "it") {
-      monsterToUse = allMonstersIt;
-    } else {
-      monsterToUse = allMonsters;
-    }
+  let language = $state<"it" | "en">("it");
 
-    // Trova il mostro
+  let { whatISee = $bindable() } = $props();
+
+  function loadMonster() {
+    loading = true;
+    error = "";
+
+    monsterToUse = language === "it" ? allMonstersIt : allMonsters;
+
     const foundMonster = monsterToUse.find((m) => m.name === whatISee);
 
     if (foundMonster) {
       monster = foundMonster;
-      console.log("Mostro trovato:", foundMonster.name);
     } else {
-      // Prova con ricerca case-insensitive
       const foundMonsterCaseInsensitive = monsterToUse.find(
         (m) => m.name.toLowerCase() === whatISee.toLowerCase()
       );
 
       if (foundMonsterCaseInsensitive) {
         monster = foundMonsterCaseInsensitive;
-        console.log(
-          "Mostro trovato (case-insensitive):",
-          foundMonsterCaseInsensitive.name
-        );
       } else {
-        console.error("Mostro non trovato:", whatISee);
-        console.log(
-          "Primi 5 mostri disponibili:",
-          allMonsters.slice(0, 5).map((m) => m.name)
-        );
         error = `Mostro "${whatISee}" non trovato`;
+        monster = null;
       }
     }
 
     loading = false;
+  }
+
+  function toggleLanguage() {
+    language = language === "it" ? "en" : "it";
+    loadMonster();
+  }
+
+  onMount(() => {
+    loadMonster();
   });
 </script>
+
+{#snippet buttonL()}
+  <div class="back-button">
+    <button onclick={() => (whatISee = "monsterList")} class="back-link">
+      <Icon icon="mdi:arrow-left" width="20" />
+      {language === "it" ? "Torna alla lista mostri" : "Back to monster list"}
+    </button>
+  </div>
+{/snippet}
 
 {#if whatISee != ""}
   {#if loading}
@@ -64,9 +73,7 @@
       <Icon icon="mdi:alert-circle" width="64" />
       <h1>Errore</h1>
       <p>{error}</p>
-      <button onclick={() => (whatISee = "monsterList")} class="back-link"
-        >← Torna alla lista mostri</button
-      >
+      {@render buttonL()}
     </div>
   {:else if monster}
     <p>
@@ -79,7 +86,20 @@
 
     <div class="monster-detail">
       <div class="monster-header">
-        <h1>{monster.name}</h1>
+        <div class="header-row">
+          <h1>{monster.name}</h1>
+
+          <div class="language-switch">
+            <button onclick={toggleLanguage} aria-label="Cambia lingua">
+              {#if language === "it"}
+                <Icon icon="twemoji:flag-for-flag-italy" width="32" />
+              {:else}
+                <Icon icon="twemoji:flag-for-flag-united-states" width="32" />
+              {/if}
+            </button>
+          </div>
+        </div>
+
         <p class="monster-meta">{monster.meta}</p>
       </div>
 
@@ -239,16 +259,60 @@
         </div>
       {/if}
 
-      <div class="back-button">
-        <button onclick={() => (whatISee = "monsterList")} class="back-link"
-          >← Torna alla lista mostri</button
-        >
-      </div>
+      {@render buttonL()}
     </div>
   {/if}
 {/if}
 
 <style>
+  .monster-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    border-bottom: 3px solid var(--monster-accent-color);
+    padding-bottom: 1rem;
+  }
+
+  .header-row {
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .monster-header h1 {
+    font-size: 2.5rem;
+    color: var(--monster-title-color);
+    margin: 0;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+  }
+
+  .monster-meta {
+    font-style: italic;
+    color: var(--secondary-text-color);
+    font-size: 1.1rem;
+    margin: 0;
+  }
+
+  /* Language switch button */
+  .language-switch button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.35rem;
+    border-radius: 8px;
+    border: 2px solid var(--monster-accent-color);
+    background: var(--card-bg-color);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .language-switch button:hover {
+    background: var(--monster-accent-color);
+    transform: scale(1.05);
+    box-shadow: var(--box-shadow-hover);
+  }
+
   /* Loading State */
   .loading-state {
     display: flex;
