@@ -11,7 +11,7 @@
   let monster: Monster | null = $state(null);
   let loading = $state(true);
   let error = $state("");
-  let language = $state<"it" | "en">("it");
+  let language = $state<"it" | "en">("en");
 
   let { whatISee = $bindable() } = $props();
 

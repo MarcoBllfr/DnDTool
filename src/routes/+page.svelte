@@ -1,5 +1,5 @@
 <script lang="ts">
-  import {CalculatorSection, Button, NavBar,  MonstersGrimoire} from "$lib/components";
+  import {CalculatorSection, Button, NavBar,  MonstersGrimoire, HomeSection} from "$lib/components";
   import { decodeStateFromUrl } from "$lib/services/ShareService";
   import { onMount } from "svelte";
   
@@ -45,9 +45,7 @@
   {/if}
 
   {#if IsRendered === "home"}
-    <div>
-      this is the home
-    </div>
+    <HomeSection bind:IsRendered = {IsRendered}/>
   {/if}
 </div>
 
