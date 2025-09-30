@@ -29,16 +29,55 @@
 </script>
 
 <NavBar bind:IsRendered = {IsRendered} />
-{#if IsRendered === "CalcTool" }
-  <CalculatorSection />  
-{/if}
-{#if IsRendered === "MonstersGrimoire" }
- <div>
-  <MonstersGrimoire />
- </div>
-{/if}
-{#if IsRendered === "home" }
- <div>
-  this the home
- </div>
-{/if}
+<video autoplay muted loop playsinline class="background-video">
+  <source src="/background1.mp4" type="video/mp4" />
+</video>
+<div class="background-overlay"></div>
+<div class="content">
+  {#if IsRendered === "CalcTool"}
+    <CalculatorSection />  
+  {/if}
+
+  {#if IsRendered === "MonstersGrimoire"}
+    <div>
+      <MonstersGrimoire />
+    </div>
+  {/if}
+
+  {#if IsRendered === "home"}
+    <div>
+      this is the home
+    </div>
+  {/if}
+</div>
+
+<style>
+
+  .background-video {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1; 
+    
+  }
+ .background-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(6px) brightness(1.0) saturate(110%);
+    -webkit-backdrop-filter: blur(6px) brightness(1.0) saturate(110%);
+    background: rgba(255, 255, 255, 0.04);
+    z-index: -1;
+  }
+
+ 
+  .content {
+    position: relative;
+    z-index: 1;
+  }
+</style>

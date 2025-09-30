@@ -79,7 +79,7 @@
 
 <style>
     .dnd-navbar {
-        background: linear-gradient(135deg, var(--nav-bg-color) 0%, rgba(var(--border-color), 0.1) 100%);
+        background-color: var(--background-color);
         position: relative;
         box-shadow: var(--box-shadow);
         margin-bottom: 2rem;
