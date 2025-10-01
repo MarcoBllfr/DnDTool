@@ -1,29 +1,28 @@
 :root {
   /* Light mode */
-  --background-color: #ffffff;
+  --background-color: #fdfaf5; 
   --text-color: #2c2c2c;
   --secondary-text-color: #5e5e5e;
   --accent-color: #8b0000;
-  --card-bg-color: #fffdf4;
-  --border-color: #c0a060;
+  --card-bg: rgba(255, 253, 244, 0.85); 
+  --card-border: #c0a060;
   --header-bg-color: #fff8e1;
   --nav-bg-color: #f5e6c4;
-  --table-header-bg: #f5e6c4;
+  --table-header-bg: rgba(245, 230, 196, 0.85);
   --button-bg-color: #8b0000;
   --button-text-color: #ffffff;
   --button-hover-bg: #a00000;
-  --input-bg-color: #fffdf4;
+  --input-bg-color: rgba(255, 253, 244, 0.85);
   --hover-color: #f5d25d;
   --table-row-hover: rgba(242, 201, 55, 0.3);
   --important-color: #8b0000;
   --underscore-color: #c0a060;
-  --box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-  --box-shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.2);
+  --box-shadow: 2px 2px 6px rgba(0,0,0,0.6); 
+  --box-shadow-hover: 4px 4px 12px rgba(0,0,0,0.6);
 
   --hero-title-color: #b8860b; 
   --hero-accent-color: #daa520; 
   
- 
   --monster-title-color: #8b0000; 
   --monster-accent-color: #a52a2a; 
 }
@@ -34,7 +33,7 @@
   --text-color: #e0dccc;
   --secondary-text-color: #a0968a;
   --accent-color: #f8e9c0;
-  --card-bg-color: rgba(0, 0, 0, 0.6);
+  --card-bg-color: rgba(0, 0, 0, 0.75);
   --border-color: #5c442a;
   --header-bg-color: #2b1a12;
   --nav-bg-color: #3a2d23;

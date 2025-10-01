@@ -82,3 +82,4 @@ export function resetMonsterData(): SavedMonsterData {
 
   return defaultData;
 }
+

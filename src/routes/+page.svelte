@@ -47,6 +47,7 @@
   {#if IsRendered === "home"}
     <HomeSection bind:IsRendered = {IsRendered}/>
   {/if}
+  
 </div>
 
 <style>
@@ -67,9 +68,9 @@
     left: 0;
     width: 100%;
     height: 100%;
-    backdrop-filter: blur(6px) brightness(1.0) saturate(110%);
-    -webkit-backdrop-filter: blur(6px) brightness(1.0) saturate(110%);
-    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(9px) brightness(0.8) saturate(150%);
+    -webkit-backdrop-filter: blur(9px) brightness(0.8) saturate(150%);
+    background: rgba(0, 0, 0, 0.55);
     z-index: -1;
   }
 
