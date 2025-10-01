@@ -1,5 +1,5 @@
 <script lang="ts">
-  import {CalculatorSection, Button, NavBar,  MonstersGrimoire, HomeSection} from "$lib/components";
+  import {CalculatorSection, Button, NavBar,  MonstersGrimoire, HomeSection,InitiativeTracker} from "$lib/components";
   import { decodeStateFromUrl } from "$lib/services/ShareService";
   import { onMount } from "svelte";
   
@@ -13,7 +13,7 @@
       
       const renderStatus = decodedState.renderStatus;
       
-      if (["home", "CalcTool", "MonstersGrimoire"].includes(renderStatus)) {
+      if (["home", "CalcTool", "MonstersGrimoire","InitiativeTracker"].includes(renderStatus)) {
         return renderStatus;
       }
     } catch (error) {
@@ -47,7 +47,11 @@
   {#if IsRendered === "home"}
     <HomeSection bind:IsRendered = {IsRendered}/>
   {/if}
-  
+
+  {#if IsRendered === "InitiativeTracker"}
+  <InitiativeTracker />
+    
+  {/if}
 </div>
 
 <style>

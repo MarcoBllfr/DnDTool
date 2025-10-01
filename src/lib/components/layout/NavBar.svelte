@@ -23,6 +23,11 @@
             label: "Monster Grimoire",
             icon: "mdi:book-open-variant",
             description: "Bestiary"
+        },
+        InitiativeTracker: {
+            label: "Initiative Tracker",
+            icon: "mdi:sword-cross",
+            description: "Combat Order"
         }
     };
 
@@ -76,7 +81,6 @@
 
     <div class="navbar-border-bottom"></div>
 </nav>
-
 <style>
     .dnd-navbar {
         background-color: var(--background-color);

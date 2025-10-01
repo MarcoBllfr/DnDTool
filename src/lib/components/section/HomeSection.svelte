@@ -40,6 +40,13 @@
             <p>Browse and search through the available monsters.</p>
           </div>
         </button>
+        <button class="welcome-section" onclick={() => changeChoice("InitiativeTracker")}>
+          <Icon icon="mdi:sword-cross" width="28" />
+          <div>
+            <h3>Initiative Tracker</h3>
+            <p>Fast and easy Initiative Tracker</p>
+          </div>
+        </button>
       </div>
 
       <p class="final-note">
